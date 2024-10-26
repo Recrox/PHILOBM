@@ -7,48 +7,53 @@ using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using PHILOBM.Constants;
+using Serilog.Events;
+
 
 namespace PHILOBM
 {
     public partial class App : Application
     {
         public static IHost? AppHost { get; private set; }
-
+        public bool ShowMessageBoxes { get; private set; }
         private readonly ILogger<App> _logger;
 
         public App()
         {
             AppHost = CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
-            _logger = AppHost.Services.GetRequiredService<ILogger<App>>(); // Initialiser le logger
+            _logger = AppHost.Services.GetRequiredService<ILogger<App>>();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.AddConsole(); // Ajoutez d'autres fournisseurs si nécessaire
-                })
-                .ConfigureServices((context, services) =>
-                {
-                    AddServices(services);
-                });
+        Host.CreateDefaultBuilder(args)
+            .UseSerilog((context, services, configuration) => configuration
+                .MinimumLevel.Error() // Définir le niveau de log à Error
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Error) // Niveaux de log spécifiques pour Microsoft
+                .Enrich.FromLogContext()
+                .WriteTo.File("logs\\app.log", rollingInterval: RollingInterval.Day)) // Écrire uniquement dans un fichier
+            .ConfigureServices((context, services) =>
+            {
+                AddServices(services);
+            });
+
+
 
         private static void AddServices(IServiceCollection services)
         {
             services.AddSingleton<MainWindow>();
             services.AddSingleton<FileService>(provider => new FileService
             {
-                DatabaseFileName = Constants.Constants.DBName,
-                BackupDirectory = Constants.Constants.BackupPath,
-                MaxBackupCount = Constants.Constants.MaxBackupCount,
-                ShowMessageBoxes = Constants.Constants.ShowMessageBoxes
+                DatabaseFileName = ConstantsSettings.DBName,
+                BackupDirectory = ConstantsSettings.BackupPath,
+                MaxBackupCount =ConstantsSettings.MaxBackupCount,
+                ShowMessageBoxes = ConstantsSettings.ShowMessageBoxes
             });
             services.AddDbContext<PhiloBMContext>(options =>
                     options.UseSqlite($"Data Source={AppDomain.CurrentDomain.BaseDirectory}/philoBM.db"));
             services.AddScoped<IClientService, ClientService>();
-            services.AddLogging(); // Ajouter les services de journalisation
+            services.AddLogging();
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -56,7 +61,7 @@ namespace PHILOBM
             try
             {
                 AppHost!.StartAsync();
-                LoadSettings(); // Charger les paramètres ici
+                LoadSettings();
                 base.OnStartup(e);
             }
             catch (Exception ex)
@@ -69,7 +74,7 @@ namespace PHILOBM
         {
             try
             {
-                AppHost!.StopAsync().Wait(); // Attendre que l'arrêt soit complet
+                AppHost!.StopAsync().Wait();
                 base.OnExit(e);
             }
             catch (Exception ex)
@@ -84,10 +89,10 @@ namespace PHILOBM
             {
                 var configuration = new ConfigurationBuilder()
                     .SetBasePath(AppContext.BaseDirectory)
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile("AppSettings.json", optional: true, reloadOnChange: true)
                     .Build();
 
-                //ShowMessageBoxes = configuration.GetValue<bool>("Settings:ShowMessageBoxes");
+                ShowMessageBoxes = configuration.GetValue<bool>("Settings:ShowMessageBoxes");
             }
             catch (Exception ex)
             {

@@ -47,17 +47,24 @@
             <TextBox Name="EmailTextBox" Margin="0,0,0,5"/>
         </StackPanel>
 
+        <!-- Champ Adresse -->
+        <StackPanel Margin="0,0,0,5" Grid.Row="6">
+            <Label Content="Adresse" Foreground="Black" FontWeight="Bold"/>
+            <TextBox Name="AdresseTextBox" Margin="0,0,0,5"/>
+        </StackPanel>
+
         <!-- Bouton Ajouter Client -->
-        <Button Content="Ajouter Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="6"/>
+        <Button Content="Ajouter Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="7"/>
 
         <!-- Liste des Clients -->
-        <ListView Name="ClientsListView" Margin="0,10,0,0" Grid.Row="7" SelectionChanged="ClientsListView_SelectionChanged">
+        <ListView Name="ClientsListView" Margin="0,10,0,0" Grid.Row="8" SelectionChanged="ClientsListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Nom}" Width="120"/>
                     <GridViewColumn Header="Prénom" DisplayMemberBinding="{Binding Prenom}" Width="120"/>
                     <GridViewColumn Header="Téléphone" DisplayMemberBinding="{Binding Telephone}" Width="120"/>
                     <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" Width="120"/>
+                    <GridViewColumn Header="Adresse" DisplayMemberBinding="{Binding Adresse}" Width="200"/>
                     <GridViewColumn Width="50">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -68,6 +75,5 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
     </Grid>
 </Page>

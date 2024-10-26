@@ -27,6 +27,7 @@ public partial class ClientDetails : Page
         FirstNameTextBox.Text = _client.Prenom;
         PhoneTextBox.Text = _client.Telephone;
         EmailTextBox.Text = _client.Email;
+
     }
 
     private async void UpdateClient_Click(object sender, RoutedEventArgs e)
@@ -42,5 +43,14 @@ public partial class ClientDetails : Page
 
         // Optionally, navigate back to the previous page
         // NavigationService.GoBack();
+    }
+
+    private void Retour_Click(object sender, RoutedEventArgs e)
+    {
+        // Naviguer vers la page précédente
+        if (NavigationService.CanGoBack)
+        {
+            NavigationService.GoBack();
+        }
     }
 }

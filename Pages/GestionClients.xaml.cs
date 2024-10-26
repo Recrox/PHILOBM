@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PHILOBM.Models;
-using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -67,19 +66,35 @@ public partial class GestionClients : Page
 
     private async void AjouterClient_Click(object sender, RoutedEventArgs e)
     {
+        // Vérifiez si tous les champs sont valides
+        if (!IsAnyFieldValid(NomTextBox, PrenomTextBox, TelephoneTextBox, EmailTextBox))
+        {
+            MessageBox.Show("Veuillez remplir au moins un champ.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
         // Créer une nouvelle instance de Client à partir des champs de texte
         var client = new Client
         {
             Nom = NomTextBox.Text,
             Prenom = PrenomTextBox.Text,
             Telephone = TelephoneTextBox.Text,
-            Email = EmailTextBox.Text
+            Email = EmailTextBox.Text,
+            Adresse = AdresseTextBox.Text,
+            
         };
 
         await _clientService.Add(client);
         await this.RefreshClientsAsync();
         ClearTextBox();
     }
+
+    private bool IsAnyFieldValid(params TextBox[] textBoxes)
+    {
+        return textBoxes.Any(tb => !string.IsNullOrWhiteSpace(tb.Text));
+    }
+
+
 
     private void ClientsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -88,6 +103,8 @@ public partial class GestionClients : Page
             // Navigate to the details page and pass the selected client
             var detailsPage = new ClientDetails(selectedClient);
             NavigationService.Navigate(detailsPage);
+            // Réinitialiser la sélection pour permettre un nouveau clic
+            ClientsListView.SelectedItem = null;
         }
     }
 
