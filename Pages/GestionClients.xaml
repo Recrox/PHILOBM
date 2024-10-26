@@ -1,0 +1,78 @@
+﻿<Page x:Class="PHILOBM.Pages.GestionClients"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Gestion des Clients">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Titre -->
+            <RowDefinition Height="Auto"/>
+            <!-- Barre de recherche -->
+            <RowDefinition Height="Auto"/>
+            <!-- Champ Nom -->
+            <RowDefinition Height="Auto"/>
+            <!-- Champ Prénom -->
+            <RowDefinition Height="Auto"/>
+            <!-- Champ Téléphone -->
+            <RowDefinition Height="Auto"/>
+            <!-- Champ Email -->
+            <RowDefinition Height="Auto"/>
+            <!-- Bouton Ajouter Client -->
+            <RowDefinition Height="*"/>
+            <!-- Liste des Clients -->
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Gestion des Clients" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" Grid.Row="0"/>
+
+        <!-- Barre de recherche -->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="1">
+            <TextBlock Text="Rechercher:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox Name="RechercheTextBox" Width="200" Margin="0,0,10,0" TextChanged="Rechercher_Click"/>
+            <Button Content="Rechercher" Click="Rechercher_Click"/>
+        </StackPanel>
+
+        <!-- Champ Nom -->
+        <Grid Margin="0,0,0,5" Grid.Row="2">
+            <Label Content="Nom" Foreground="Black" FontWeight="Bold" Margin="0,0,0,2"/>
+            <TextBox Name="NomTextBox" Margin="0,0,0,5"/>
+        </Grid>
+
+        <!-- Champ Prénom -->
+        <Grid Margin="0,0,0,5" Grid.Row="3">
+            <Label Content="Prénom" Foreground="Black" FontWeight="Bold" Margin="0,0,0,2"/>
+            <TextBox Name="PrenomTextBox" Margin="0,0,0,5"/>
+        </Grid>
+
+        <!-- Champ Téléphone -->
+        <Grid Margin="0,0,0,5" Grid.Row="4">
+            <Label Content="Téléphone" Foreground="Black" FontWeight="Bold" Margin="0,0,0,2"/>
+            <TextBox Name="TelephoneTextBox" Margin="0,0,0,5"/>
+        </Grid>
+
+        <!-- Champ Email -->
+        <Grid Margin="0,0,0,5" Grid.Row="5">
+            <Label Content="Email" Foreground="Black" FontWeight="Bold" Margin="0,0,0,2"/>
+            <TextBox Name="EmailTextBox" Margin="0,0,0,5"/>
+        </Grid>
+
+        <Button Content="Ajouter Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="6"/>
+
+        <ListView Name="ClientsListView" Margin="0,10,0,0" Grid.Row="7">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Nom}" Width="120"/>
+                    <GridViewColumn Header="Prénom" DisplayMemberBinding="{Binding Prenom}" Width="120"/>
+                    <GridViewColumn Header="Téléphone" DisplayMemberBinding="{Binding Telephone}" Width="120"/>
+                    <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" Width="120"/>
+                    <GridViewColumn Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="✖" Click="SupprimerClient_Click" Tag="{Binding}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

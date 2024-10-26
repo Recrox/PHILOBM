@@ -1,0 +1,12 @@
+﻿<Page x:Class="PHILOBM.Pages.Accueil"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Accueil">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Bienvenue dans PHILO B.M" FontSize="32" FontWeight="Bold" Margin="0,0,0,20"/>
+            <TextBlock Text="Gérez vos clients et vos factures facilement." FontSize="20" Margin="0,0,0,20"/>
+            <Button Content="Commencer" Width="150" Click="Commencer_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

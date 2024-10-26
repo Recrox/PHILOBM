@@ -1,29 +1,18 @@
 ﻿<Window x:Class="PHILOBM.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PHILO B.M" Height="400" Width="600">
+        xmlns:pages="clr-namespace:PHILOBM.Pages"
+        Title="PHILO B.M" Height="500" Width="800">
     <Grid>
         <Menu>
-            <Menu>
-                <MenuItem Header="Fichier">
-                    <MenuItem Header="Gestion des Clients" Click="GestionClients_Click"/>
-                </MenuItem>
-            </Menu>
-            
-            <MenuItem Header="Fichier">
-                <MenuItem Header="Nouveau" Click="Nouveau_Click"/>
-                <MenuItem Header="Ouvrir" Click="Ouvrir_Click"/>
-                <MenuItem Header="Enregistrer" Click="Enregistrer_Click"/>
-                <MenuItem Header="Quitter" Click="Quitter_Click"/>
-            </MenuItem>
-            
-            <MenuItem Header="Clients" Click="Clients_Click"/>
-            <MenuItem Header="Voitures" Click="Voitures_Click"/>
-            <MenuItem Header="Factures" Click="Factures_Click"/>
-            
+            <MenuItem Header="Accueil" Click="Accueil_Click"/>
+            <MenuItem Header="Gestion" Click="GestionClients_Click"/>
+
             <MenuItem Header="Aide">
                 <MenuItem Header="À propos" Click="Apropos_Click"/>
             </MenuItem>
         </Menu>
+
+        <Frame Name="MainFrame" Margin="10" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
