@@ -4,6 +4,7 @@ using PHILOBM.Database;
 using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
 
 namespace PHILOBM;
 
@@ -16,33 +17,26 @@ public partial class App : Application
         AppHost = CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
     }
 
-    //[STAThread]
-    //public static void Main()
-    //{
-    //    AppHost = CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
-
-    //    var app = new App();
-    //    app.InitializeComponent();
-    //    app.Run();
-    //}
-
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
             .ConfigureServices((context, services) =>
             {
-                // Enregistrement des services
-                services.AddSingleton<MainWindow>();
-                services.AddDbContext<PhiloBMContext>();
-                services.AddScoped<IClientService, ClientService>();
-                // Ajoutez d'autres services ici si nécessaire
+                AddServices(services);
             });
+
+    private static void AddServices(IServiceCollection services)
+    {
+        services.AddSingleton<MainWindow>();
+        services.AddDbContext<PhiloBMContext>(options =>
+            //options.UseSqlite(context.Configuration.GetConnectionString("SQLiteDefault")));
+            options.UseSqlite("Data Source=philoBM.db"));
+
+        services.AddScoped<IClientService, ClientService>();
+    }
 
     protected override void OnStartup(StartupEventArgs e)
     {
         AppHost!.StartAsync();
-        // Les services sont déjà configurés dans CreateHostBuilder, vous pouvez les utiliser comme suit :
-        //var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
-        //mainWindow.Show();
         base.OnStartup(e);
     }
 

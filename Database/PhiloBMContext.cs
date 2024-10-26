@@ -11,9 +11,14 @@ public class PhiloBMContext : DbContext
     public DbSet<Facture> Factures { get; set; }
     public DbSet<Service> Services { get; set; }
 
+    public PhiloBMContext(DbContextOptions<PhiloBMContext> options)
+           : base(options)
+    {
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=Data/philoBM.db");
+
     }
 }
 
