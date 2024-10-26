@@ -1,7 +1,10 @@
-﻿namespace PHILOBM.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PHILOBM.Models;
 
 public class Client
 {
+    [Key]
     public int Id { get; set; }
     public string? Nom { get; set; }
     public string? Prenom { get; set; }
