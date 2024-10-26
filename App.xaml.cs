@@ -6,6 +6,7 @@ using PHILOBM.Services.Interfaces;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using PHILOBM.Constants;
 
 namespace PHILOBM;
 
@@ -29,6 +30,14 @@ public partial class App : Application
     private static void AddServices(IServiceCollection services)
     {
         services.AddSingleton<MainWindow>();
+        // Configure BackupService avec ses paramètres
+        services.AddSingleton<FileService>(provider => new FileService
+        {
+            DatabaseFileName = Constants.Constants.DBName,
+            BackupDirectory = Constants.Constants.BackupPath,
+            MaxBackupCount = 1000,
+            ShowMessageBoxes = false 
+        });
         services.AddDbContext<PhiloBMContext>(options =>
                 options.UseSqlite($"Data Source={AppDomain.CurrentDomain.BaseDirectory}/philoBM.db"));
 

@@ -1,4 +1,7 @@
-﻿using PHILOBM.Pages;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PHILOBM.Pages;
+using PHILOBM.Services;
+using PHILOBM.Services.Interfaces;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -12,10 +15,15 @@ public partial class MainWindow : Window
     private const int MaxBackupCount = 1;
     public bool ShowMessageBoxes { get; set; }
 
+    private readonly FileService _backupService;
+
     public MainWindow()
     {
         InitializeComponent();
         // Initialiser la page de gestion des clients
+        var fileService = App.AppHost.Services.GetRequiredService<FileService>();
+        _backupService = fileService;
+
         MainFrame.Navigate(new Accueil());
         this.Closing += MainWindow_Closing; // Gérer l'événement de fermeture
     }
@@ -39,66 +47,6 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-        SauvegarderBaseDeDonnees();
+        _backupService.SauvegarderBaseDeDonnees();
     }
-
-    private void SauvegarderBaseDeDonnees()
-    {
-        try
-        {
-            // Créer le dossier de sauvegarde s'il n'existe pas
-            if (!Directory.Exists(BackupDirectory))
-            {
-                Directory.CreateDirectory(BackupDirectory);
-            }
-
-            // Chemin complet de la base de données actuelle
-            string sourceFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DatabaseFileName);
-
-            // Créer un nom de fichier de sauvegarde unique
-            string backupFileName = Path.Combine(BackupDirectory, $"{DatabaseFileName}_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
-
-            // Copier le fichier de base de données
-            File.Copy(sourceFile, backupFileName, true); // true pour écraser le fichier s'il existe
-
-            // Gérer les sauvegardes excédentaires
-            GérerSauvegardesExcédentaires();
-
-            // Afficher le MessageBox si ShowMessageBoxes est vrai
-            if (ShowMessageBoxes)
-            {
-                MessageBox.Show($"Sauvegarde réussie : {backupFileName}", "Sauvegarde", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Erreur lors de la sauvegarde de la base de données : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    private void GérerSauvegardesExcédentaires()
-    {
-        // Récupérer tous les fichiers de sauvegarde
-        var backupFiles = Directory.GetFiles(BackupDirectory)
-            .OrderBy(f => f) // Tri par nom de fichier (les plus anciens en premier)
-            .ToList();
-
-        // Vérifier si le nombre de fichiers dépasse la constante MaxBackupCount
-        if (backupFiles.Count > MaxBackupCount)
-        {
-            // Supprimer les fichiers les plus anciens
-            int filesToDelete = backupFiles.Count - MaxBackupCount;
-            for (int i = 0; i < filesToDelete; i++)
-            {
-                File.Delete(backupFiles[i]);
-            }
-
-            // Afficher le MessageBox si ShowMessageBoxes est vrai
-            if (ShowMessageBoxes)
-            {
-                MessageBox.Show($"{filesToDelete} sauvegardes supprimées pour maintenir le nombre à {MaxBackupCount}.", "Gestion des Sauvegardes", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-    }
-
 }
