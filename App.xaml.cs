@@ -5,12 +5,14 @@ using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace PHILOBM;
 
 public partial class App : Application
 {
     public static IHost? AppHost { get; private set; }
+    public bool ShowMessageBoxes { get; private set; }
 
     public App()
     {
@@ -28,8 +30,8 @@ public partial class App : Application
     {
         services.AddSingleton<MainWindow>();
         services.AddDbContext<PhiloBMContext>(options =>
-            //options.UseSqlite(context.Configuration.GetConnectionString("SQLiteDefault")));
-            options.UseSqlite("Data Source=philoBM.db"));
+                options.UseSqlite($"Data Source={AppDomain.CurrentDomain.BaseDirectory}/philoBM.db"));
+
 
         services.AddScoped<IClientService, ClientService>();
     }
@@ -44,6 +46,16 @@ public partial class App : Application
     {
         AppHost!.StopAsync();
         base.OnExit(e);
+    }
+
+    private void LoadSettings()
+    {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("AppSettings.json", optional: true, reloadOnChange: true)
+            .Build();
+
+        ShowMessageBoxes = configuration.GetValue<bool>("Settings:ShowMessageBoxes");
     }
 
 }

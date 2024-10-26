@@ -5,21 +5,13 @@
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Titre -->
             <RowDefinition Height="Auto"/>
-            <!-- Barre de recherche -->
             <RowDefinition Height="Auto"/>
-            <!-- Champ Nom -->
             <RowDefinition Height="Auto"/>
-            <!-- Champ Prénom -->
             <RowDefinition Height="Auto"/>
-            <!-- Champ Téléphone -->
             <RowDefinition Height="Auto"/>
-            <!-- Champ Email -->
             <RowDefinition Height="Auto"/>
-            <!-- Bouton Ajouter Client -->
             <RowDefinition Height="*"/>
-            <!-- Liste des Clients -->
         </Grid.RowDefinitions>
 
         <TextBlock Text="Gestion des Clients" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" Grid.Row="0"/>
@@ -32,31 +24,33 @@
         </StackPanel>
 
         <!-- Champ Nom -->
-        <Grid Margin="0,0,0,5" Grid.Row="2">
-            <Label Content="Nom" Foreground="Black" FontWeight="Bold" Margin="0,0,0,2"/>
+        <StackPanel Margin="0,0,0,5" Grid.Row="2">
+            <Label Content="Nom" Foreground="Black" FontWeight="Bold"/>
             <TextBox Name="NomTextBox" Margin="0,0,0,5"/>
-        </Grid>
+        </StackPanel>
 
         <!-- Champ Prénom -->
-        <Grid Margin="0,0,0,5" Grid.Row="3">
-            <Label Content="Prénom" Foreground="Black" FontWeight="Bold" Margin="0,0,0,2"/>
+        <StackPanel Margin="0,0,0,5" Grid.Row="3">
+            <Label Content="Prénom" Foreground="Black" FontWeight="Bold"/>
             <TextBox Name="PrenomTextBox" Margin="0,0,0,5"/>
-        </Grid>
+        </StackPanel>
 
         <!-- Champ Téléphone -->
-        <Grid Margin="0,0,0,5" Grid.Row="4">
-            <Label Content="Téléphone" Foreground="Black" FontWeight="Bold" Margin="0,0,0,2"/>
+        <StackPanel Margin="0,0,0,5" Grid.Row="4">
+            <Label Content="Téléphone" Foreground="Black" FontWeight="Bold"/>
             <TextBox Name="TelephoneTextBox" Margin="0,0,0,5"/>
-        </Grid>
+        </StackPanel>
 
         <!-- Champ Email -->
-        <Grid Margin="0,0,0,5" Grid.Row="5">
-            <Label Content="Email" Foreground="Black" FontWeight="Bold" Margin="0,0,0,2"/>
+        <StackPanel Margin="0,0,0,5" Grid.Row="5">
+            <Label Content="Email" Foreground="Black" FontWeight="Bold"/>
             <TextBox Name="EmailTextBox" Margin="0,0,0,5"/>
-        </Grid>
+        </StackPanel>
 
+        <!-- Bouton Ajouter Client -->
         <Button Content="Ajouter Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="6"/>
 
+        <!-- Liste des Clients -->
         <ListView Name="ClientsListView" Margin="0,10,0,0" Grid.Row="7">
             <ListView.View>
                 <GridView>
