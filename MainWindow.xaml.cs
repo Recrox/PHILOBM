@@ -2,6 +2,7 @@
 using PHILOBM.Pages;
 using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -21,7 +22,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         // Initialiser la page de gestion des clients
-        var fileService = App.AppHost.Services.GetRequiredService<FileService>();
+        var fileService = App.AppHost?.Services.GetRequiredService<FileService>() ?? throw new Exception("FileService not loaded"); ;
         _backupService = fileService;
 
         MainFrame.Navigate(new Accueil());
@@ -45,7 +46,7 @@ public partial class MainWindow : Window
         MessageBox.Show($"PHILO B.M - Version {version}");
     }
 
-    private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    private void MainWindow_Closing(object? sender, CancelEventArgs e)
     {
         _backupService.SauvegarderBaseDeDonnees();
     }

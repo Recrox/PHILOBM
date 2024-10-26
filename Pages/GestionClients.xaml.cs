@@ -22,12 +22,13 @@ public partial class GestionClients : Page
         var clientService = App.AppHost.Services.GetRequiredService<IClientService>();
         _clientService = clientService;
         // Récupérer le service à partir du conteneur DI
-        ChargerClientsAsync(); // Charger les clients lors de l'initialisation
+        _ = RefreshClientsAsync(); // Charger les clients lors de l'initialisation
     }
 
-    private async void ChargerClientsAsync()
+    private async Task RefreshClientsAsync()
     {
-        var clients = await _clientService.ChargerClients();
+        Clients.Clear();
+        var clients = await _clientService.GetAll();
         foreach (var client in clients)
         {
             Clients.Add(client);
@@ -42,11 +43,10 @@ public partial class GestionClients : Page
                                                   c.Telephone.Contains(searchText) ||
                                                   c.Email.ToLower().Contains(searchText)).ToList();
 
-        // Mettre à jour l'affichage avec les clients filtrés
         ClientsListView.ItemsSource = filteredClients;
     }
 
-    private void SupprimerClient_Click(object sender, RoutedEventArgs e)
+    private async void SupprimerClient_ClickAsync(object sender, RoutedEventArgs e)
     {
         Button boutonSupprimer = sender as Button;
         Client clientASupprimer = boutonSupprimer.Tag as Client;
@@ -58,7 +58,8 @@ public partial class GestionClients : Page
 
             if (result == MessageBoxResult.Yes)
             {
-                Clients.Remove(clientASupprimer);
+                await _clientService.Delete(clientASupprimer.Id);
+                await this.RefreshClientsAsync();
                 // Optionnel : Supprimez le client de la base de données ici si nécessaire
             }
         }
@@ -75,17 +76,26 @@ public partial class GestionClients : Page
             Email = EmailTextBox.Text
         };
 
-        // Utiliser le service pour ajouter le client à la base de données
-        await _clientService.AjouterClient(client);
+        await _clientService.Add(client);
+        await this.RefreshClientsAsync();
+        ClearTextBox();
+    }
 
-        // Ajouter le client à la collection locale pour mettre à jour l'interface
-        Clients.Add(client);
+    private void ClientsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (ClientsListView.SelectedItem is Client selectedClient)
+        {
+            // Navigate to the details page and pass the selected client
+            var detailsPage = new ClientDetails(selectedClient);
+            NavigationService.Navigate(detailsPage);
+        }
+    }
 
-        // Effacer les champs de texte
+    private void ClearTextBox()
+    {
         NomTextBox.Clear();
         PrenomTextBox.Clear();
         TelephoneTextBox.Clear();
         EmailTextBox.Clear();
     }
-
 }

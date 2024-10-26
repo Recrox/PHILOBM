@@ -6,65 +6,93 @@ using PHILOBM.Services.Interfaces;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using PHILOBM.Constants;
 
-namespace PHILOBM;
-
-public partial class App : Application
+namespace PHILOBM
 {
-    public static IHost? AppHost { get; private set; }
-    public bool ShowMessageBoxes { get; private set; }
-
-    public App()
+    public partial class App : Application
     {
-        AppHost = CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
-    }
+        public static IHost? AppHost { get; private set; }
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureServices((context, services) =>
-            {
-                AddServices(services);
-            });
+        private readonly ILogger<App> _logger;
 
-    private static void AddServices(IServiceCollection services)
-    {
-        services.AddSingleton<MainWindow>();
-        // Configure BackupService avec ses paramètres
-        services.AddSingleton<FileService>(provider => new FileService
+        public App()
         {
-            DatabaseFileName = Constants.Constants.DBName,
-            BackupDirectory = Constants.Constants.BackupPath,
-            MaxBackupCount = 1000,
-            ShowMessageBoxes = false 
-        });
-        services.AddDbContext<PhiloBMContext>(options =>
-                options.UseSqlite($"Data Source={AppDomain.CurrentDomain.BaseDirectory}/philoBM.db"));
+            AppHost = CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
+            _logger = AppHost.Services.GetRequiredService<ILogger<App>>(); // Initialiser le logger
+        }
 
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConsole(); // Ajoutez d'autres fournisseurs si nécessaire
+                })
+                .ConfigureServices((context, services) =>
+                {
+                    AddServices(services);
+                });
 
-        services.AddScoped<IClientService, ClientService>();
+        private static void AddServices(IServiceCollection services)
+        {
+            services.AddSingleton<MainWindow>();
+            services.AddSingleton<FileService>(provider => new FileService
+            {
+                DatabaseFileName = Constants.Constants.DBName,
+                BackupDirectory = Constants.Constants.BackupPath,
+                MaxBackupCount = Constants.Constants.MaxBackupCount,
+                ShowMessageBoxes = Constants.Constants.ShowMessageBoxes
+            });
+            services.AddDbContext<PhiloBMContext>(options =>
+                    options.UseSqlite($"Data Source={AppDomain.CurrentDomain.BaseDirectory}/philoBM.db"));
+            services.AddScoped<IClientService, ClientService>();
+            services.AddLogging(); // Ajouter les services de journalisation
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            try
+            {
+                AppHost!.StartAsync();
+                LoadSettings(); // Charger les paramètres ici
+                base.OnStartup(e);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Une erreur s'est produite lors du démarrage de l'application.");
+            }
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            try
+            {
+                AppHost!.StopAsync().Wait(); // Attendre que l'arrêt soit complet
+                base.OnExit(e);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Une erreur s'est produite lors de l'arrêt de l'application.");
+            }
+        }
+
+        private void LoadSettings()
+        {
+            try
+            {
+                var configuration = new ConfigurationBuilder()
+                    .SetBasePath(AppContext.BaseDirectory)
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .Build();
+
+                //ShowMessageBoxes = configuration.GetValue<bool>("Settings:ShowMessageBoxes");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Une erreur s'est produite lors du chargement des paramètres.");
+            }
+        }
     }
-
-    protected override void OnStartup(StartupEventArgs e)
-    {
-        AppHost!.StartAsync();
-        base.OnStartup(e);
-    }
-
-    protected override void OnExit(ExitEventArgs e)
-    {
-        AppHost!.StopAsync();
-        base.OnExit(e);
-    }
-
-    private void LoadSettings()
-    {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("AppSettings.json", optional: true, reloadOnChange: true)
-            .Build();
-
-        ShowMessageBoxes = configuration.GetValue<bool>("Settings:ShowMessageBoxes");
-    }
-
 }

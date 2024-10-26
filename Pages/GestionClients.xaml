@@ -51,7 +51,7 @@
         <Button Content="Ajouter Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="6"/>
 
         <!-- Liste des Clients -->
-        <ListView Name="ClientsListView" Margin="0,10,0,0" Grid.Row="7">
+        <ListView Name="ClientsListView" Margin="0,10,0,0" Grid.Row="7" SelectionChanged="ClientsListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding Nom}" Width="120"/>
@@ -61,12 +61,13 @@
                     <GridViewColumn Width="50">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="✖" Click="SupprimerClient_Click" Tag="{Binding}"/>
+                                <Button Content="✖" Click="SupprimerClient_ClickAsync" Tag="{Binding}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
+
     </Grid>
 </Page>
