@@ -13,7 +13,7 @@ public class PhiloBMContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=philoBM.db");
+        optionsBuilder.UseSqlite("Data Source=Data/philoBM.db");
     }
 }
 

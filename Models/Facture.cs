@@ -1,11 +1,14 @@
 ﻿using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using PHILOBM.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace PHILOBM.Models;
 
 public class Facture
 {
+
+    [Key]
     public int Id { get; set; }
     public Client Client { get; set; } = null!;
     public Voiture Voiture { get; set; } = null!;

@@ -1,8 +1,11 @@
-﻿namespace PHILOBM.Models.Base;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PHILOBM.Models.Base;
 
 // Classe abstraite pour représenter un service
-public abstract class Service
+public  class Service
 {
+    [Key]
     public int Id { get; set; }
     public string? Description { get; set; }
     public decimal Prix { get; set; }
