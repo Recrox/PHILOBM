@@ -11,9 +11,6 @@ namespace PHILOBM;
 
 public partial class MainWindow : Window
 {
-    private const string DatabaseFileName = Constants.ConstantsSettings.DBName; // Nom de votre fichier de base de données
-    private const string BackupDirectory = Constants.ConstantsSettings.BackupPath; // Dossier de sauvegarde
-    private const int MaxBackupCount = 1;
     public bool ShowMessageBoxes { get; set; }
 
     private readonly FileService _backupService;

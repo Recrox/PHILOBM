@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PHILOBM.Models.Base;
 
 namespace PHILOBM.Models;
 
-public class Client
+public class Client : BaseEntity
 {
-    [Key]
-    public int Id { get; set; }
     public string? Nom { get; set; }
     public string? Prenom { get; set; }
     public string? Adresse { get; set; }

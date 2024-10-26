@@ -67,7 +67,7 @@ public partial class GestionClients : Page
     private async void AjouterClient_Click(object sender, RoutedEventArgs e)
     {
         // Vérifiez si tous les champs sont valides
-        if (!IsAnyFieldValid(NomTextBox, PrenomTextBox, TelephoneTextBox, EmailTextBox))
+        if (!IsAnyFieldValid())
         {
             MessageBox.Show("Veuillez remplir au moins un champ.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
@@ -81,7 +81,6 @@ public partial class GestionClients : Page
             Telephone = TelephoneTextBox.Text,
             Email = EmailTextBox.Text,
             Adresse = AdresseTextBox.Text,
-            
         };
 
         await _clientService.Add(client);
@@ -89,10 +88,17 @@ public partial class GestionClients : Page
         ClearTextBox();
     }
 
-    private bool IsAnyFieldValid(params TextBox[] textBoxes)
+    private bool IsAnyFieldValid()
     {
-        return textBoxes.Any(tb => !string.IsNullOrWhiteSpace(tb.Text));
+        // Vérifiez tous les champs directement
+        return !string.IsNullOrWhiteSpace(NomTextBox.Text) ||
+               !string.IsNullOrWhiteSpace(PrenomTextBox.Text) ||
+               !string.IsNullOrWhiteSpace(TelephoneTextBox.Text) ||
+               !string.IsNullOrWhiteSpace(EmailTextBox.Text)
+               || !string.IsNullOrWhiteSpace(AdresseTextBox.Text)
+               ;
     }
+
 
 
 

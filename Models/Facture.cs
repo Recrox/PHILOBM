@@ -5,11 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PHILOBM.Models;
 
-public class Facture
+public class Facture : BaseEntity
 {
-
-    [Key]
-    public int Id { get; set; }
     public Client Client { get; set; } = null!;
     public Voiture Voiture { get; set; } = null!;
     public DateTime Date { get; set; }

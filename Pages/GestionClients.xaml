@@ -47,7 +47,7 @@
             <TextBox Name="EmailTextBox" Margin="0,0,0,5"/>
         </StackPanel>
 
-        <!-- Champ Adresse -->
+         <!--Champ Adresse--> 
         <StackPanel Margin="0,0,0,5" Grid.Row="6">
             <Label Content="Adresse" Foreground="Black" FontWeight="Bold"/>
             <TextBox Name="AdresseTextBox" Margin="0,0,0,5"/>

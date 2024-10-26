@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PHILOBM.Models.Base;
 
 namespace PHILOBM.Models;
 
 // Classe pour la voiture, liée à un client
-public class Voiture
+public class Voiture : BaseEntity
 {
-    [Key]
-    public int Id { get; set; }
     public string? NumeroPlaque { get; set; }
     public string? NumeroChassis { get; set; }
     public int Kilometrage { get; set; }
