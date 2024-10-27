@@ -8,29 +8,30 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Linq;
 using System.ComponentModel;
+using System.Windows.Navigation;
 
 namespace PHILOBM.Pages;
 
 public partial class GestionClients : Page
 {
     private readonly IClientService _clientService;
-    public ObservableCollection<Client> Clients { get; set; }
-    private ICollectionView _clientsView;
+    public ObservableCollection<Client> Clients { get; set; } = new ObservableCollection<Client>();
 
     public GestionClients()
     {
         InitializeComponent();
-        Clients = new ObservableCollection<Client>();
         _clientService = ServiceLocator.GetService<IClientService>();
-        _clientsView = CollectionViewSource.GetDefaultView(Clients);
-        ClientsListView.ItemsSource = _clientsView;
+
+        //ClientsListView.ItemsSource = _clientsView;
         _ = RefreshClientsAsync(); // Charger les clients lors de l'initialisation
+
     }
 
     private async Task RefreshClientsAsync()
     {
         Clients.Clear();
         var clients = await _clientService.GetAllAsync();
+        ClientsListView.ItemsSource = clients;
         foreach (var client in clients)
         {
             Clients.Add(client);
@@ -40,18 +41,19 @@ public partial class GestionClients : Page
     private void Rechercher_Click(object sender, RoutedEventArgs e)
     {
         string searchText = RechercheTextBox.Text.ToLower();
-        _clientsView.Filter = client =>
-        {
-            if (client is Client c)
-            {
-                return c.LastName.ToLower().Contains(searchText) ||
-                       c.FirstName.ToLower().Contains(searchText) ||
-                       c.Phone.Contains(searchText) ||
-                       c.Email.ToLower().Contains(searchText);
-            }
-            return false;
-        };
+
+        // Filtrer les clients à l'aide de LINQ
+        var clientFiltered = Clients
+            .Where(client => client.LastName.ToLower().Contains(searchText) ||
+                             client.FirstName.ToLower().Contains(searchText) ||
+                             client.Phone.Contains(searchText) ||
+                             client.Email.ToLower().Contains(searchText))
+            .ToList(); // Convertir le résultat en liste
+
+        // Mettre à jour l'affichage avec les clients filtrés
+        ClientsListView.ItemsSource = clientFiltered;
     }
+
 
     private async void SupprimerClient_ClickAsync(object sender, RoutedEventArgs e)
     {
@@ -66,7 +68,7 @@ public partial class GestionClients : Page
             if (result == MessageBoxResult.Yes)
             {
                 await _clientService.DeleteAsync(clientASupprimer.Id);
-                Clients.Remove(clientASupprimer); // Met à jour l'ObservableCollection
+                await this.RefreshClientsAsync();
             }
         }
     }

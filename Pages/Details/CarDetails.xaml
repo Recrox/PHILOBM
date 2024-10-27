@@ -12,8 +12,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <!-- Pour le ListView -->
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -43,15 +44,24 @@
                 <TextBox Name="ChassisNumberTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
             </StackPanel>
 
-            <TextBlock Text="Services associés" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="6" Foreground="Black"/>
+            <StackPanel Grid.Row="6" Margin="0,0,0,5">
+                <Label Content="Kilométrage" FontWeight="Bold"/>
+                <TextBox Name="MileageTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
+            </StackPanel>
 
-            <ListView Name="ServicesListView" Margin="0,0,0,5" Grid.Row="7" ItemsSource="{Binding Services}">
+
+            <Button Name="UpdateOrAddCarButton" Content="{Binding ButtonContent}" Click="UpdateOrAddCar_Click" 
+                    Width="100" Height="30" Margin="0,10,0,10" Grid.Row="7"
+                    HorizontalAlignment="Stretch"/>
+
+            <TextBlock Text="Services associés" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="8" Foreground="Black"/>
+
+            <ListView Name="ServicesListView" Margin="0,0,0,5" Grid.Row="9" ItemsSource="{Binding Car.Services}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Description" Width="200" DisplayMemberBinding="{Binding Description}"/>
                         <GridViewColumn Header="Prix" Width="100" DisplayMemberBinding="{Binding Price}"/>
                         <GridViewColumn Header="Unités" Width="80" DisplayMemberBinding="{Binding Units}"/>
-                        <!--<GridViewColumn Header="Coût" Width="100" DisplayMemberBinding="{Binding Path=Price, Converter={StaticResource PriceConverter}}"/>-->
                     </GridView>
                 </ListView.View>
             </ListView>

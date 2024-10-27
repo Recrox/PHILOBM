@@ -1,4 +1,5 @@
 ﻿using PHILOBM.Models.Base;
+using System.Collections.ObjectModel;
 
 namespace PHILOBM.Models;
 
@@ -13,6 +14,6 @@ public class Car : AuditableEntity
     public string? Brand { get; set; } // Car brand
     public string? Model { get; set; } // Car model
 
-    public List<Service> Services { get; set; } = new List<Service>();
+    public ObservableCollection<Service> Services { get; set; } = new ObservableCollection<Service>();
 }
 

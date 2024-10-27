@@ -110,9 +110,7 @@ public partial class ClientDetails : Page
 
     private void AddCarButton_Click(object sender, RoutedEventArgs e)
     {
-        AddCar addCarPage = new AddCar(_client); // Passez le client actuel à la page AddCar
-        NavigationService.Navigate(addCarPage);
-        //CarsListView.SelectedItem = null;
+        NavigationService.Navigate(new CarDetails(_client.Id));
     }
 
     private async void DeleteCarButton_Click(object sender, RoutedEventArgs e)
