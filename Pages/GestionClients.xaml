@@ -21,12 +21,13 @@
         </StackPanel>
         
         <!-- Bouton Ajouter Client -->
-        <Button Content="Ajouter un nouveau Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="2" FontSize="20"/>
+        <Button Background="#2196F3" Foreground="White" Content="Ajouter un nouveau Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="2" FontSize="20"/>
 
         <!-- Liste des Clients -->
         <ListView Name="ClientsListView" Margin="0,10,0,0" Grid.Row="3" ItemsSource="{Binding Clients}" SelectionChanged="ClientsListView_SelectionChanged">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="60"/>
                     <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding LastName}" Width="120"/>
                     <GridViewColumn Header="Prénom" DisplayMemberBinding="{Binding FirstName}" Width="120"/>
                     <GridViewColumn Header="Téléphone" DisplayMemberBinding="{Binding Phone}" Width="120"/>

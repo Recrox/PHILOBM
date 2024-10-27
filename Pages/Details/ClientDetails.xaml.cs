@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using PdfSharpCore.Pdf.IO;
+using System.Collections.ObjectModel;
 
 namespace PHILOBM.Pages.Details;
 
@@ -70,7 +72,9 @@ public partial class ClientDetails : Page
         PhoneTextBox.Text = _client.Phone;
         EmailTextBox.Text = _client.Email;
         AddressTextBox.Text = _client.Address;
-        // Utiliser le ListView pour afficher les voitures
+
+        var cars = await _carService.GetAllCarsByClientIdAsync(_client.Id);
+        _client.Cars = new ObservableCollection<Car>(cars);
         CarsListView.ItemsSource = _client.Cars; // Utilisez ItemsSource pour lier la collection de voitures
     }
 
@@ -121,7 +125,7 @@ public partial class ClientDetails : Page
 
     private void AddCarButton_Click(object sender, RoutedEventArgs e)
     {
-        NavigationService.Navigate(new CarDetails());
+        NavigationService.Navigate(new CarDetails(clientId:_client.Id));
     }
 
     private async void DeleteCarButton_Click(object sender, RoutedEventArgs e)
@@ -156,7 +160,7 @@ public partial class ClientDetails : Page
             if (selectedCar != null)
             {
                 // Naviguez vers la page de détails de la voiture
-                var carDetailPage = new CarDetails(selectedCar.Id); // Passez l'objet `Car` à votre page de détails
+                var carDetailPage = new CarDetails(carId: selectedCar.Id, clientId: _client.Id); // Passez l'objet `Car` à votre page de détails
                 NavigationService?.Navigate(carDetailPage); // Utilisez NavigationService pour naviguer
                 CarsListView.SelectedItem = null;
             }

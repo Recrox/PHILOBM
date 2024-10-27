@@ -18,12 +18,12 @@ public class PhiloBMContext : DbContext
         // Assurez-vous que la base de données est créée si elle n'existe pas
         //this.Database.EnsureCreated();
         //this.Database.EnsureDeleted();
-        this.Database.Migrate();
+        //this.Database.Migrate();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite($"Data Source={ConstantsSettings.DBName}");
+        //optionsBuilder.UseSqlite($"Data Source={ConstantsSettings.DBName}");
     }
 }
 

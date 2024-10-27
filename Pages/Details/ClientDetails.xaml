@@ -25,9 +25,10 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Button Content="Retour" Click="Retour_Click" 
-                    Height="30" Margin="0,0,0,10" Grid.Row="1"
-                    HorizontalAlignment="Stretch"/>
+            <Button Click="Retour_Click" Height="30" Margin="0,0,0,10" Grid.Row="1" HorizontalAlignment="Stretch" Background="#2196F3" Foreground="White">
+                <TextBlock Text="← Retour" FontSize="24" VerticalAlignment="Center"/>
+            </Button>
+
 
             <TextBlock Text="Détails du Client" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="2"/>
 
@@ -60,21 +61,22 @@
                     Name="UpdateOrAddClientButton" 
                     Click="UpdateOrAddClient_Click"
                     Height="30" Margin="0,10,0,0" Grid.Row="8"
-                    HorizontalAlignment="Stretch"/>
+                    HorizontalAlignment="Stretch" Background="#2196F3" Foreground="White"/>
 
             <Button Name="BillingButton" Content="Facturation" Click="BillingButton_Click" 
                     Height="30" Margin="0,10,0,0" Grid.Row="9"
-                    HorizontalAlignment="Stretch"/>
+                    HorizontalAlignment="Stretch" Background="#2196F3" Foreground="White"/>
 
             <Button Content="Ajouter une Voiture" Click="AddCarButton_Click" 
                     Height="30" Margin="0,10,0,0" Grid.Row="10"
-                    HorizontalAlignment="Stretch"/>
+                    HorizontalAlignment="Stretch" Background="#2196F3" Foreground="White"/>
 
             <TextBlock Text="Voiture du client" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="11" Foreground="Black"/>
 
             <ListView Name="CarsListView" Margin="0,0,0,5" Grid.Row="12" ItemsSource="{Binding Client.Cars}" SelectionChanged="CarsListView_SelectionChanged">
                 <ListView.View>
                     <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="60"/>
                         <GridViewColumn Header="Marque" Width="120" DisplayMemberBinding="{Binding Brand}"/>
                         <GridViewColumn Header="Modèle" Width="120" DisplayMemberBinding="{Binding Model}"/>
                         <GridViewColumn Header="Numéro de Plaque" Width="120" DisplayMemberBinding="{Binding LicensePlate}"/>

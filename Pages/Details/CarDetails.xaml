@@ -31,10 +31,9 @@
                 <!-- 10 Liste des Services -->
             </Grid.RowDefinitions>
 
-
-            <Button Content="Retour" Click="Retour_Click" 
-                    Width="75" Height="30" Margin="0,0,0,10" Grid.Row="0"
-                    HorizontalAlignment="Left"/>
+            <Button Click="Retour_Click" Height="30" Margin="0,0,0,10" Grid.Row="0" HorizontalAlignment="Stretch" Background="#2196F3" Foreground="White">
+                <TextBlock Text="← Retour" FontSize="24" VerticalAlignment="Center"/>
+            </Button>
 
             <TextBlock Text="Détails de la Voiture" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="1"/>
 
@@ -67,13 +66,14 @@
 
             <Button Name="UpdateOrAddCarButton" Content="{Binding ButtonContent}" Click="UpdateOrAddCar_Click" 
                     Height="30" Margin="0,10,0,10" Grid.Row="8"
-                    HorizontalAlignment="Stretch"/>
+                    HorizontalAlignment="Stretch" Background="#2196F3" Foreground="White"/>
 
             <TextBlock Text="Services associés" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="9" Foreground="Black"/>
 
             <ListView Name="ServicesListView" Margin="0,0,0,5" Grid.Row="10" ItemsSource="{Binding Car.Services}">
                 <ListView.View>
                     <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="60"/>
                         <GridViewColumn Header="Description" Width="200" DisplayMemberBinding="{Binding Description}"/>
                         <GridViewColumn Header="Prix" Width="100" DisplayMemberBinding="{Binding Price}"/>
                         <GridViewColumn Header="Unités" Width="80" DisplayMemberBinding="{Binding Units}"/>

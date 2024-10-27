@@ -75,19 +75,10 @@ public partial class InvoicePage : Page
 
     private void OpenDownloadFolder_Click(object sender, RoutedEventArgs e)
     {
-        // Chemin du dossier de téléchargement de l'utilisateur
-        string downloadFolderPath = ConstantsSettings.DownloadPath;
-
-        if (Directory.Exists(downloadFolderPath))
-        {
-            // Ouvre le dossier dans l'explorateur de fichiers
-            Process.Start("explorer.exe", downloadFolderPath);
-        }
-        else
-        {
-            MessageBox.Show("Le dossier de téléchargement n'existe pas.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        Outils.OpenFolder(ConstantsSettings.DownloadPath);
     }
+
+    
 
     private void LoadMockInvoices()
     {

@@ -13,6 +13,8 @@ public partial class CarDetails : Page
     private readonly ICarService _carService;
     private readonly IClientService _clientService;
     private Car _car;
+    private int? _currentClientId;
+
 
     private string _buttonContent;
     public string ButtonContent
@@ -31,7 +33,7 @@ public partial class CarDetails : Page
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public CarDetails(int? carId = null)
+    public CarDetails(int? carId = null, int? clientId = null)
     {
         InitializeComponent();
         _carService = ServiceLocator.GetService<ICarService>();
@@ -40,10 +42,14 @@ public partial class CarDetails : Page
         // Définir le contenu du bouton en fonction de la présence du clientId
         ButtonContent = carId == null ? "Ajouter la voiture" : "Mettre à jour la voiture";
 
+        _currentClientId = clientId;
+
         if (carId != null)
             _ = RefreshCarDetails(carId.Value);
 
         _=LoadClients();
+
+        
 
         DataContext = this; // Assurez-vous que le DataContext est bien défini
 
@@ -84,7 +90,7 @@ public partial class CarDetails : Page
                 Mileage = int.TryParse(MileageTextBox.Text, out int mileage) ? mileage : 0,
                 Brand = BrandTextBox.Text,
                 Model = ModelTextBox.Text,
-                ClientId = selectedClientId,
+                ClientId = _currentClientId,
             };
 
             await _carService.AddAsync(car); // Assurez-vous que cette méthode existe
@@ -98,7 +104,7 @@ public partial class CarDetails : Page
         _car.Mileage = int.TryParse(MileageTextBox.Text, out int updatedMileage) ? updatedMileage : _car.Mileage; // Conserve l'ancienne valeur si le parsing échoue
         _car.Brand = BrandTextBox.Text;
         _car.Model = ModelTextBox.Text;
-        _car.ClientId = selectedClientId; // Assigner l'ID du client lors de la mise à jour
+        _car.ClientId = _currentClientId; // Assigner l'ID du client lors de la mise à jour
 
         await _carService.UpdateAsync(_car); // Assurez-vous que cette méthode existe
 

@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Windows;
 
 namespace PHILOBM.Services;
 
@@ -13,6 +15,19 @@ public static class Outils
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
+        }
+    }
+
+    public static void OpenFolder(string downloadFolderPath)
+    {
+        if (Directory.Exists(downloadFolderPath))
+        {
+            // Ouvre le dossier dans l'explorateur de fichiers
+            Process.Start("explorer.exe", downloadFolderPath);
+        }
+        else
+        {
+            MessageBox.Show($"Le dossier n'existe pas. à l'emplacment {downloadFolderPath}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
