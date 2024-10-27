@@ -1,6 +1,5 @@
-﻿using PdfSharpCore.Drawing;
-using PdfSharpCore.Pdf;
-using PHILOBM.Models.Base;
+﻿using PHILOBM.Models.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PHILOBM.Models;
 
@@ -11,6 +10,8 @@ public class Invoice : BaseEntity
     public DateTime Date { get; set; }
     public List<Service> Services { get; set; } = new List<Service>();
 
+    [NotMapped]
+    public decimal Total => CalculSum();
     public decimal CalculSum()
     {
         return Services.Sum(service => service.CalculateCost());

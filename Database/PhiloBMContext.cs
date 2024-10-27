@@ -17,7 +17,7 @@ public class PhiloBMContext : DbContext
            : base(options)
     {
         // Assurez-vous que la base de données est créée si elle n'existe pas
-        this.Database.EnsureCreated();
+        //this.Database.EnsureCreated();
         //this.Database.EnsureDeleted();
     }
 

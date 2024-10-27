@@ -33,27 +33,27 @@
 
             <StackPanel Grid.Row="3" Margin="0,0,0,5">
                 <Label Content="Nom" FontWeight="Bold"/>
-                <TextBox Name="NameTextBox" Margin="0,0,0,5" />
+                <TextBox Name="NameTextBox" Margin="0,0,0,5" TextChanged="TextBox_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Row="4" Margin="0,0,0,5">
                 <Label Content="Prénom" FontWeight="Bold"/>
-                <TextBox Name="FirstNameTextBox" Margin="0,0,0,5" />
+                <TextBox Name="FirstNameTextBox" Margin="0,0,0,5" TextChanged="TextBox_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Row="5" Margin="0,0,0,5">
                 <Label Content="Téléphone" FontWeight="Bold"/>
-                <TextBox Name="PhoneTextBox" Margin="0,0,0,5" />
+                <TextBox Name="PhoneTextBox" Margin="0,0,0,5" TextChanged="TextBox_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Row="6" Margin="0,0,0,5">
                 <Label Content="Email" FontWeight="Bold"/>
-                <TextBox Name="EmailTextBox" Margin="0,0,0,5" />
+                <TextBox Name="EmailTextBox" Margin="0,0,0,5" TextChanged="TextBox_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Row="7" Margin="0,0,0,5">
                 <Label Content="Adresse" FontWeight="Bold"/>
-                <TextBox Name="AddressTextBox" Margin="0,0,0,5" />
+                <TextBox Name="AddressTextBox" Margin="0,0,0,5" TextChanged="TextBox_TextChanged"/>
                 <!-- Ajouté pour l'adresse -->
             </StackPanel>
 

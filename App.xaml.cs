@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using PHILOBM.Constants;
 using Serilog.Events;
+using System.IO;
 
 namespace PHILOBM;
 
@@ -45,17 +46,28 @@ public partial class App : Application
         {
             DatabaseFileName = ConstantsSettings.DBName,
             BackupDirectory = ConstantsSettings.BackupPath,
-            MaxBackupCount =ConstantsSettings.MaxBackupCount,
+            MaxBackupCount = ConstantsSettings.MaxBackupCount,
             ShowMessageBoxes = ConstantsSettings.ShowMessageBoxes
         });
-
-        services.AddDbContext<PhiloBMContext>(options =>
-                options.UseSqlite($"Data Source={ConstantsSettings.DBName}"));
+        AddDbContext(services);
 
         services.AddScoped<IClientService, ClientService>();
         services.AddScoped<ICarService, CarService>();
         services.AddScoped<IInvoiceService, InvoiceService>();
         services.AddLogging();
+    }
+
+    private static void AddDbContext(IServiceCollection services)
+    {
+        var dbDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Database");
+        if (!Directory.Exists(dbDirectory))
+        {
+            Directory.CreateDirectory(dbDirectory);
+        }
+        var dbPath = Path.Combine(dbDirectory, ConstantsSettings.DBName);
+
+        services.AddDbContext<PhiloBMContext>(options =>
+            options.UseSqlite($"Data Source={dbPath}"));
     }
 
     protected override void OnStartup(StartupEventArgs e)

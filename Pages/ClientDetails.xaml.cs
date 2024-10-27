@@ -37,13 +37,6 @@ public partial class ClientDetails : Page
 
         // Utiliser le ListView pour afficher les voitures
         CarsListView.ItemsSource = _client.Cars; // Utilisez ItemsSource pour lier la collection de voitures
-
-
-        // Ajoutez des gestionnaires d'événements pour détecter les modifications
-        NameTextBox.TextChanged += TextBox_TextChanged;
-        FirstNameTextBox.TextChanged += TextBox_TextChanged;
-        PhoneTextBox.TextChanged += TextBox_TextChanged;
-        EmailTextBox.TextChanged += TextBox_TextChanged;
     }
 
     private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

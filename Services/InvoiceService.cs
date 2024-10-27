@@ -5,6 +5,8 @@ using PHILOBM.Database;
 using PHILOBM.Models;
 using PHILOBM.Services.Interfaces;
 using System.IO;
+using System.Reflection.Metadata;
+using System.Xml.Linq;
 
 namespace PHILOBM.Services;
 
@@ -26,16 +28,17 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
 
         double margin = 40;
         double yPoint = margin;
+        double adresseHeight;
 
         DessinerTitre(gfx, page, ref yPoint);
-        DessinerAdresseGarage(gfx, page, ref yPoint, margin);
+        DessinerAdresseGarage(gfx, page, ref yPoint, margin, out adresseHeight);
         DessinerInformationsDroite(gfx, page, invoice, yPoint, margin);
         DessinerTVA(gfx, page, ref yPoint, margin);
         DessinerInformationsClient(gfx, page, invoice, ref yPoint, margin);
         DessinerTableauPlaqueEtKilometrage(gfx, page, invoice, ref yPoint, margin);
-        DessinerTableauServices(gfx, page, invoice, ref yPoint, margin);
-        DessinerTotal(gfx, page, invoice, ref yPoint, margin);
-        DessinerMessagePaiement(gfx, page, ref yPoint, margin);
+        DessinerTableauServices(gfx, document, page, invoice, ref yPoint, margin);
+        DessinerTotal(gfx, document, page, invoice, ref yPoint, margin);
+        DessinerMessagePaiement(gfx, document, page, ref yPoint, margin);
 
         SauvegarderDocument(document, directoryPath, invoice);
     }
@@ -57,9 +60,11 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         yPoint += 50;
     }
 
-    private void DessinerAdresseGarage(XGraphics gfx, PdfPage page, ref double yPoint, double margin)
+    private void DessinerAdresseGarage(XGraphics gfx, PdfPage page, ref double yPoint, double margin, out double adresseHeight)
     {
         string[] garageAddressLines = { "Rue Champ Courtin 16", "7522 Marquain", "0473/95.10.03" };
+        adresseHeight = 20 * garageAddressLines.Length; // Calculer la hauteur totale de l'adresse
+
         foreach (var line in garageAddressLines)
         {
             gfx.DrawString(line, new XFont("Verdana", 12), XBrushes.Black,
@@ -72,6 +77,17 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
     {
         double rightMargin = page.Width - margin;
         string dateTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+        double initialYPoint = yPoint; // Conserver le yPoint initial
+
+        // Charger le logo de BMW
+        string logoPath = Path.Combine("Assets", "bmw_logo.png");
+        if (File.Exists(logoPath))
+        {
+            XImage logo = XImage.FromFile(logoPath);
+            gfx.DrawImage(logo, rightMargin - 150, yPoint - 40, 150, 40); // Ajustez la position et la taille selon vos besoins
+            yPoint += 40; // Ajustez yPoint pour laisser de l'espace pour l'image
+        }
+
         gfx.DrawString($"Date : {dateTime}", new XFont("Verdana", 12), XBrushes.Black,
             new XRect(rightMargin - 150, yPoint, 150, 20), XStringFormats.TopRight);
         yPoint += 20;
@@ -83,7 +99,12 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         gfx.DrawString($"Adresse client : {invoice.Client.Address}", new XFont("Verdana", 12), XBrushes.Black,
             new XRect(rightMargin - 150, yPoint, 150, 20), XStringFormats.TopRight);
         yPoint += 20;
+
+        // Alignez la hauteur des informations à droite avec celle de l'adresse du garage
+        yPoint = initialYPoint; // Réinitialiser yPoint à la valeur initiale
     }
+
+
 
     private void DessinerTVA(XGraphics gfx, PdfPage page, ref double yPoint, double margin)
     {
@@ -124,15 +145,16 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         yPoint += 30;
     }
 
-    private void DessinerTableauServices(XGraphics gfx, PdfPage page, Invoice invoice, ref double yPoint, double margin)
+    private void DessinerTableauServices(XGraphics gfx, PdfDocument document, PdfPage page, Invoice invoice, ref double yPoint, double margin)
     {
-        // Tableau pour Unité, Description, Prix
         double colWidth = (page.Width - 2 * margin) / 3;
         double cellHeight = 20;
 
-        gfx.DrawRectangle(XPens.Black, margin, yPoint, colWidth, cellHeight);
-        gfx.DrawRectangle(XPens.Black, margin + colWidth, yPoint, colWidth, cellHeight);
-        gfx.DrawRectangle(XPens.Black, margin + 2 * colWidth, yPoint, colWidth, cellHeight);
+        // Dessiner les en-têtes du tableau
+        DessinerRectangle(gfx, margin, yPoint, colWidth, cellHeight);
+        DessinerRectangle(gfx, margin + colWidth, yPoint, colWidth, cellHeight);
+        DessinerRectangle(gfx, margin + 2 * colWidth, yPoint, colWidth, cellHeight);
+
         gfx.DrawString("Unité", new XFont("Verdana", 12, XFontStyle.Bold), XBrushes.Black,
             new XRect(margin, yPoint, colWidth, cellHeight), XStringFormats.Center);
         gfx.DrawString("Description", new XFont("Verdana", 12, XFontStyle.Bold), XBrushes.Black,
@@ -143,9 +165,18 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
 
         foreach (var service in invoice.Services)
         {
-            gfx.DrawRectangle(XPens.Black, margin, yPoint, colWidth, cellHeight);
-            gfx.DrawRectangle(XPens.Black, margin + colWidth, yPoint, colWidth, cellHeight);
-            gfx.DrawRectangle(XPens.Black, margin + 2 * colWidth, yPoint, colWidth, cellHeight);
+            // Vérifier si l'on doit ajouter une nouvelle page
+            if (yPoint + cellHeight > page.Height - 50) // Laisser un marge de 50 points en bas
+            {
+                page = document.AddPage();
+                gfx = XGraphics.FromPdfPage(page);
+                yPoint = 40; // Réinitialiser yPoint pour la nouvelle page
+            }
+
+            DessinerRectangle(gfx, margin, yPoint, colWidth, cellHeight);
+            DessinerRectangle(gfx, margin + colWidth, yPoint, colWidth, cellHeight);
+            DessinerRectangle(gfx, margin + 2 * colWidth, yPoint, colWidth, cellHeight);
+
             gfx.DrawString(service.Units.ToString(), new XFont("Verdana", 12), XBrushes.Black,
                 new XRect(margin, yPoint, colWidth, cellHeight), XStringFormats.Center);
             gfx.DrawString(service.Description, new XFont("Verdana", 12), XBrushes.Black,
@@ -156,20 +187,52 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         }
     }
 
-    private void DessinerTotal(XGraphics gfx, PdfPage page, Invoice invoice, ref double yPoint, double margin)
+
+    private void DessinerRectangle(XGraphics gfx, double x, double y, double width, double height)
+    {
+        gfx.DrawRectangle(XPens.Black, x, y, width, height);
+    }
+
+    private void DessinerTotal(XGraphics gfx, PdfDocument document, PdfPage page, Invoice invoice, ref double yPoint, double margin)
     {
         yPoint += 10;
         double colWidth = (page.Width - 2 * margin) / 3;
+        double totalHeight = 20; // Hauteur de la zone de texte du total
+
+        // Vérification si yPoint dépasse la hauteur de la page
+        if (yPoint + totalHeight + 30 > page.Height - 50) // Laisser une marge de 50 points en bas
+        {
+            page = document.AddPage();
+            gfx = XGraphics.FromPdfPage(page);
+            yPoint = margin; // Réinitialiser yPoint pour la nouvelle page
+        }
+
+        // Placer le total à la fin de la page
         gfx.DrawString($"Total: {invoice.CalculSum()} €", new XFont("Verdana", 14, XFontStyle.Bold), XBrushes.Black,
-            new XRect(margin + 2 * colWidth, yPoint, colWidth, 20), XStringFormats.CenterRight);
+            new XRect(margin + 2 * colWidth, yPoint, colWidth, totalHeight), XStringFormats.CenterRight);
+        yPoint += totalHeight + 10; // Ajuster l'espacement après le total
     }
 
-    private void DessinerMessagePaiement(XGraphics gfx, PdfPage page, ref double yPoint, double margin)
+    private void DessinerMessagePaiement(XGraphics gfx, PdfDocument document, PdfPage page, ref double yPoint, double margin)
     {
-        yPoint += 40;
+        double messageHeight = 40; // Hauteur de la zone de texte pour le message de paiement
+
+        // Vérification si yPoint dépasse la hauteur de la page
+        if (yPoint + messageHeight > page.Height - 50) // Laisser une marge de 50 points en bas
+        {
+            page = document.AddPage();
+            gfx = XGraphics.FromPdfPage(page);
+            yPoint = margin; // Réinitialiser yPoint pour la nouvelle page
+        }
+
+        yPoint += 10; // Ajouter un espace avant le message de paiement
+                      // Placer le message de paiement à la fin de la page
         gfx.DrawString("A verser sur le numéro de compte BE51 1262 0722 0675", new XFont("Verdana", 12), XBrushes.Black,
-            new XRect(margin, yPoint, page.Width - 2 * margin, page.Height), XStringFormats.TopLeft);
+            new XRect(margin, yPoint, page.Width - 2 * margin, messageHeight), XStringFormats.TopLeft);
+        yPoint += messageHeight + 10; // Ajustez si nécessaire pour un espacement ultérieur
     }
+
+
 
     private void SauvegarderDocument(PdfDocument document, string directoryPath, Invoice invoice, bool useClientNameAndDate = true)
     {
