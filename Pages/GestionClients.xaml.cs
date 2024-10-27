@@ -5,7 +5,9 @@ using PHILOBM.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using System.Windows.Data;
+using System.Linq;
+using System.ComponentModel;
 
 namespace PHILOBM.Pages;
 
@@ -13,13 +15,15 @@ public partial class GestionClients : Page
 {
     private readonly IClientService _clientService;
     public ObservableCollection<Client> Clients { get; set; }
+    private ICollectionView _clientsView;
 
     public GestionClients()
     {
         InitializeComponent();
         Clients = new ObservableCollection<Client>();
-        ClientsListView.ItemsSource = Clients;
-        _clientService = ServiceLocator.GetService<IClientService>(); ;
+        _clientService = ServiceLocator.GetService<IClientService>();
+        _clientsView = CollectionViewSource.GetDefaultView(Clients);
+        ClientsListView.ItemsSource = _clientsView;
         _ = RefreshClientsAsync(); // Charger les clients lors de l'initialisation
     }
 
@@ -36,12 +40,17 @@ public partial class GestionClients : Page
     private void Rechercher_Click(object sender, RoutedEventArgs e)
     {
         string searchText = RechercheTextBox.Text.ToLower();
-        var filteredClients = Clients.Where(c => c.LastName.ToLower().Contains(searchText) ||
-                                                  c.FirstName.ToLower().Contains(searchText) ||
-                                                  c.Phone.Contains(searchText) ||
-                                                  c.Email.ToLower().Contains(searchText)).ToList();
-
-        ClientsListView.ItemsSource = filteredClients;
+        _clientsView.Filter = client =>
+        {
+            if (client is Client c)
+            {
+                return c.LastName.ToLower().Contains(searchText) ||
+                       c.FirstName.ToLower().Contains(searchText) ||
+                       c.Phone.Contains(searchText) ||
+                       c.Email.ToLower().Contains(searchText);
+            }
+            return false;
+        };
     }
 
     private async void SupprimerClient_ClickAsync(object sender, RoutedEventArgs e)
@@ -57,7 +66,7 @@ public partial class GestionClients : Page
             if (result == MessageBoxResult.Yes)
             {
                 await _clientService.DeleteAsync(clientASupprimer.Id);
-                await this.RefreshClientsAsync();
+                Clients.Remove(clientASupprimer); // Met à jour l'ObservableCollection
             }
         }
     }
@@ -66,21 +75,15 @@ public partial class GestionClients : Page
     {
         if (ClientsListView.SelectedItem is Client selectedClient)
         {
-            // Navigate to the details page and pass the selected client
             var detailsPage = new ClientDetails(selectedClient.Id);
             NavigationService.Navigate(detailsPage);
-            // Réinitialiser la sélection pour permettre un nouveau clic
-            ClientsListView.SelectedItem = null;
+            ClientsListView.SelectedItem = null; // Réinitialiser la sélection
         }
     }
-    
+
     private void AjouterClient_Click(object sender, EventArgs e)
     {
-        // Navigate to the details page and pass the selected client
         var detailsPage = new ClientDetails();
         NavigationService.Navigate(detailsPage);
-        // Réinitialiser la sélection pour permettre un nouveau clic
     }
-
-    
 }
