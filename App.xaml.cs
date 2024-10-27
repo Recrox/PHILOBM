@@ -52,7 +52,7 @@ public partial class App : Application
             ShowMessageBoxes = ConstantsSettings.ShowMessageBoxes
         });
         services.AddDbContext<PhiloBMContext>(options =>
-                options.UseSqlite($"Data Source={AppDomain.CurrentDomain.BaseDirectory}/{ConstantsSettings.DBName}"));
+                options.UseSqlite($"Data Source={ConstantsSettings.DBName}"));
         services.AddScoped<IClientService, ClientService>();
         services.AddLogging();
     }
