@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:pages="clr-namespace:PHILOBM.Pages"
         Title="PHILO B.M" Height="700" Width="1200"
-        Icon="Assets/garage_place_building.ico">
+        Icon="Assets/garage_place_building.ico"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Menu Background="#E8F5E9">
             <MenuItem Header="Accueil" Click="Accueil_Click"/>

@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using PdfSharpCore.Pdf.IO;
 using System.Collections.ObjectModel;
 
 namespace PHILOBM.Pages.Details;
