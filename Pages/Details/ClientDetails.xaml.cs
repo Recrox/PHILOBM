@@ -3,6 +3,8 @@ using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
 using System.Windows;
 using System.Windows.Controls;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace PHILOBM.Pages.Details;
 
@@ -12,18 +14,40 @@ public partial class ClientDetails : Page
     private readonly ICarService _carService;
     private Client _client;
 
-    public ClientDetails(int clientId)
+    private string _buttonContent;
+    public string ButtonContent
+    {
+        get => _buttonContent;
+        set
+        {
+            _buttonContent = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public ClientDetails(int? clientId = null)
     {
         InitializeComponent();
         _clientService = ServiceLocator.GetService<IClientService>();
         _carService = ServiceLocator.GetService<ICarService>();
 
+        // Définir le contenu du bouton en fonction de la présence du clientId
+        ButtonContent = clientId == null ? "Ajouter le client" : "Mettre à jour le client";
 
-        // Load client data into text boxes
-        RefreshClientDetails(clientId);
+        if (clientId != null)
+            RefreshClientDetails(clientId.Value);
+
+        DataContext = this; // Assurez-vous que le DataContext est bien défini
 
         // Désactiver le bouton de mise à jour au démarrage
-        UpdateClientButton.IsEnabled = false; // Assurez-vous que le bouton a ce nom
+        UpdateOrAddClientButton.IsEnabled = false; 
     }
 
     private async void RefreshClientDetails(int clientId)
@@ -41,11 +65,27 @@ public partial class ClientDetails : Page
 
     private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        UpdateClientButton.IsEnabled = true; // Activez le bouton de mise à jour
+        UpdateOrAddClientButton.IsEnabled = true; // Activez le bouton de mise à jour
     }
 
-    private async void UpdateClient_Click(object sender, RoutedEventArgs e)
+    private async void UpdateOrAddClient_Click(object sender, RoutedEventArgs e)
     {
+        if (_client is null)
+        {
+            // Créer une nouvelle instance de Client à partir des champs de texte
+            var client = new Client
+            {
+                LastName = NameTextBox.Text,
+                FirstName = FirstNameTextBox.Text,
+                Phone = PhoneTextBox.Text,
+                Email = EmailTextBox.Text,
+                Address = AddressTextBox.Text,
+            };
+
+            await _clientService.AddAsync(client);
+            Retour_Click(sender, e);
+            return;
+        }
         // Update client details from the text boxes
         _client.LastName = NameTextBox.Text;
         _client.FirstName = FirstNameTextBox.Text;
@@ -56,7 +96,7 @@ public partial class ClientDetails : Page
         await _clientService.UpdateAsync(_client); // Ensure this method exists
         //MessageBox.Show("Client updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-        UpdateClientButton.IsEnabled = false; // Désactivez à nouveau le bouton
+        UpdateOrAddClientButton.IsEnabled = false; // Désactivez à nouveau le bouton
     }
 
     private void Retour_Click(object sender, RoutedEventArgs e)
@@ -113,5 +153,30 @@ public partial class ClientDetails : Page
             }
         }
     }
+
+    //private async void AjouterClient_Click(object sender, RoutedEventArgs e)
+    //{
+    //    // Vérifiez si les champs du client sont valides
+    //    if (!IsClientValid())
+    //    {
+    //        //MessageBox.Show("Veuillez vérifier les informations saisies.\nLe nom doit contenir au moins 3 lettres et le numéro de téléphone doit être valide.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+    //        MessageBox.Show("Veuillez remplir au moins un champ.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+    //        return;
+    //    }
+
+    //    // Créer une nouvelle instance de Client à partir des champs de texte
+    //    var client = new Client
+    //    {
+    //        LastName = NomTextBox.Text,
+    //        FirstName = PrenomTextBox.Text,
+    //        Phone = TelephoneTextBox.Text,
+    //        Email = EmailTextBox.Text,
+    //        Address = AdresseTextBox.Text,
+    //    };
+
+    //    await _clientService.AddAsync(client);
+    //    await this.RefreshClientsAsync();
+    //    ClearTextBox();
+    //}
 
 }

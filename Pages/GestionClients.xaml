@@ -6,11 +6,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/> <!-- Row for the button -->
             <RowDefinition Height="*"/> <!-- Row for the ListView -->
         </Grid.RowDefinitions>
@@ -23,38 +18,12 @@
             <TextBox Name="RechercheTextBox" Width="200" Margin="0,0,10,0" TextChanged="Rechercher_Click"/>
             <Button Content="Rechercher" Click="Rechercher_Click"/>
         </StackPanel>
-
-        <StackPanel Margin="0,0,0,5" Grid.Row="2">
-            <Label Content="Nom" Foreground="Black" FontWeight="Bold"/>
-            <TextBox Name="NomTextBox" Margin="0,0,0,5" KeyDown="TextBox_KeyDown"/>
-        </StackPanel>
-
-        <StackPanel Margin="0,0,0,5" Grid.Row="3">
-            <Label Content="Prénom" Foreground="Black" FontWeight="Bold"/>
-            <TextBox Name="PrenomTextBox" Margin="0,0,0,5" KeyDown="TextBox_KeyDown"/>
-        </StackPanel>
-
-        <StackPanel Margin="0,0,0,5" Grid.Row="4">
-            <Label Content="Téléphone" Foreground="Black" FontWeight="Bold"/>
-            <TextBox Name="TelephoneTextBox" Margin="0,0,0,5" KeyDown="TextBox_KeyDown"/>
-        </StackPanel>
-
-        <StackPanel Margin="0,0,0,5" Grid.Row="5">
-            <Label Content="Email" Foreground="Black" FontWeight="Bold"/>
-            <TextBox Name="EmailTextBox" Margin="0,0,0,5" KeyDown="TextBox_KeyDown"/>
-        </StackPanel>
-
-        <StackPanel Margin="0,0,0,5" Grid.Row="6">
-            <Label Content="Adresse" Foreground="Black" FontWeight="Bold"/>
-            <TextBox Name="AdresseTextBox" Margin="0,0,0,5" KeyDown="TextBox_KeyDown"/>
-        </StackPanel>
-
-
+        
         <!-- Bouton Ajouter Client -->
-        <Button Content="Ajouter le Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="7"/>
+        <Button Content="Ajouter un nouveau Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="2" FontSize="20"/>
 
         <!-- Liste des Clients -->
-        <ListView Name="ClientsListView" Margin="0,10,0,0" Grid.Row="8" SelectionChanged="ClientsListView_SelectionChanged">
+        <ListView Name="ClientsListView" Margin="0,10,0,0" Grid.Row="3" SelectionChanged="ClientsListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Nom" DisplayMemberBinding="{Binding LastName}" Width="120"/>
