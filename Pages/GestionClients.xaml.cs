@@ -124,7 +124,7 @@ public partial class GestionClients : Page
         if (ClientsListView.SelectedItem is Client selectedClient)
         {
             // Navigate to the details page and pass the selected client
-            var detailsPage = new ClientDetails(selectedClient);
+            var detailsPage = new ClientDetails(selectedClient.Id);
             NavigationService.Navigate(detailsPage);
             // Réinitialiser la sélection pour permettre un nouveau clic
             ClientsListView.SelectedItem = null;

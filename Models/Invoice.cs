@@ -5,16 +5,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PHILOBM.Models;
 
-public class Facture : BaseEntity
+public class Invoice : BaseEntity
 {
     public Client Client { get; set; } = null!;
-    public Car Voiture { get; set; } = null!;
+    public Car Car { get; set; } = null!;
     public DateTime Date { get; set; }
     public List<Service> Services { get; set; } = new List<Service>();
 
-    public decimal CalculerTotal()
+    public decimal CalculSum()
     {
-        return Services.Sum(service => service.CalculerCout());
+        return Services.Sum(service => service.CalculateCost());
     }
     
 public void CreerPDF()

@@ -1,12 +1,12 @@
 ﻿namespace PHILOBM.Models.Base;
 
-// Classe abstraite pour représenter un service
-public  class Service : BaseEntity
+public class Service : BaseEntity
 {
     public string? Description { get; set; }
-    public decimal Prix { get; set; }
-    public decimal CalculerCout()
+    public decimal Price { get; set; }
+
+    public decimal CalculateCost()
     {
-        return Prix; // Vous pouvez ajuster cette logique selon vos besoins
+        return Price; 
     }
 }

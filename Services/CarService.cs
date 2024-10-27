@@ -14,6 +14,6 @@ public class CarService : BaseContextService<Car>, ICarService
 
     public async Task<List<Car>> GetAllCarsByClientIdAsync(int clientId)
     {
-        return await _context.Voitures.Where(car => car.ClientId == clientId).ToListAsync();
+        return await _context.Cars.Where(car => car.ClientId == clientId).ToListAsync();
     }
 }

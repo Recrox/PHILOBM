@@ -10,24 +10,28 @@ namespace PHILOBM.Pages;
 public partial class ClientDetails : Page
 {
     private readonly IClientService _clientService;
+    private readonly ICarService _carService;
     private Client _client;
     private bool _isModified = false; // Ajout de la variable pour suivre les modifications
 
-    public ClientDetails(Client client)
+    public ClientDetails(int clientId)
     {
         InitializeComponent();
         _clientService = ServiceLocator.GetService<IClientService>();
-        _client = client;
+        _carService = ServiceLocator.GetService<ICarService>();
+
 
         // Load client data into text boxes
-        LoadClientDetails();
+        LoadClientDetails(clientId);
 
         // Désactiver le bouton de mise à jour au démarrage
         UpdateClientButton.IsEnabled = false; // Assurez-vous que le bouton a ce nom
     }
 
-    private void LoadClientDetails()
+    private async void LoadClientDetails(int clientId)
     {
+        _client = await _clientService.GetClientByIdWithCarsAsync(clientId) ?? throw new Exception("Client don't exist");
+
         NameTextBox.Text = _client.Nom;
         FirstNameTextBox.Text = _client.Prenom;
         PhoneTextBox.Text = _client.Telephone;
@@ -79,5 +83,24 @@ public partial class ClientDetails : Page
     {
         AddCar addCarPage = new AddCar(_client); // Passez le client actuel à la page AddCar
         NavigationService.Navigate(addCarPage);
+        //CarsListView.SelectedItem = null;
+    }
+
+    private async void DeleteCarButton_Click(object sender, RoutedEventArgs e)
+    {
+        Button deleteButton = sender as Button;
+        Car carToDelete = deleteButton.Tag as Car;
+
+        if (carToDelete != null)
+        {
+            MessageBoxResult result = MessageBox.Show($"Êtes-vous sûr de vouloir supprimer la voiture {carToDelete.Brand} {carToDelete.Model} ?",
+                "Confirmation de suppression", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                await _clientService.DeleteAsync(carToDelete.Id); // Suppression de la voiture
+                LoadClientDetails(_client.Id);
+            }
+        }
     }
 }

@@ -10,9 +10,6 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using PHILOBM.Constants;
 using Serilog.Events;
-using Microsoft.Extensions.Options;
-using PHILOBM.Models;
-
 
 namespace PHILOBM;
 

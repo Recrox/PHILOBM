@@ -8,9 +8,10 @@ namespace PHILOBM.Database;
 public class PhiloBMContext : DbContext
 {
     public DbSet<Client> Clients { get; set; }
-    public DbSet<Car> Voitures { get; set; }
-    public DbSet<Facture> Factures { get; set; }
+    public DbSet<Car> Cars { get; set; }
+    public DbSet<Invoice> Invoices { get; set; }
     public DbSet<Service> Services { get; set; }
+
 
     public PhiloBMContext(DbContextOptions<PhiloBMContext> options)
            : base(options)
