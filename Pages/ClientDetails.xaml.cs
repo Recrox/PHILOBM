@@ -98,4 +98,10 @@ public partial class ClientDetails : Page
             }
         }
     }
+
+    private void BillingButton_Click(object sender, RoutedEventArgs e)
+    {
+        var invoicePage = new InvoicePage(_client.Id);
+        NavigationService.Navigate(invoicePage);
+    }
 }

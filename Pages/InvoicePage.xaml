@@ -1,0 +1,29 @@
+﻿<Page x:Class="PHILOBM.Pages.InvoicePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Facture">
+
+    <Grid Margin="10">
+        <TextBlock Text="Historique de Facturation" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <ListView Name="InvoicesListView" ItemsSource="{Binding Invoices}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding Date}"/>
+                    <GridViewColumn Header="Client" Width="200" DisplayMemberBinding="{Binding Client.LastName}"/>
+                    <GridViewColumn Header="Voiture" Width="200" DisplayMemberBinding="{Binding Car.LicensePlate}"/>
+                    <GridViewColumn Header="Total" Width="100" DisplayMemberBinding="{Binding Total}"/>
+                    <GridViewColumn Header="Actions" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Imprimer"
+                                        Command="{Binding PrintInvoiceCommand}" 
+                                        ToolTip="Imprimer cette facture"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

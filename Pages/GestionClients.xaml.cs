@@ -149,4 +149,6 @@ public partial class GestionClients : Page
             e.Handled = true; // Empêche le son de "ding" lorsque Enter est pressé
         }
     }
+
+    
 }

@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PHILOBM.Database;
+using PHILOBM.Models.Base;
 using PHILOBM.Services.Interfaces;
 
 namespace PHILOBM.Services;
 
-public abstract class BaseContextService<T> : IBaseContextService<T> where T : class
+public abstract class BaseContextService<T> : IBaseContextService<T> where T : BaseEntity
 {
     protected readonly PhiloBMContext _context;
 
@@ -20,7 +21,7 @@ public abstract class BaseContextService<T> : IBaseContextService<T> where T : c
 
     public async Task<T?> GetByIdAsync(int id)
     {
-        return await _context.Set<T>().FindAsync(id);
+        return await _context.Set<T>().FirstOrDefaultAsync(item => item.Id == id);
     }
 
     public async Task AddAsync(T entity)

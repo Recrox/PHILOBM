@@ -52,6 +52,7 @@ public partial class App : Application
                 options.UseSqlite($"Data Source={ConstantsSettings.DBName}"));
         services.AddScoped<IClientService, ClientService>();
         services.AddScoped<ICarService, CarService>();
+        services.AddScoped<IInvoiceService, InvoiceService>();
         services.AddLogging();
     }
 

@@ -48,6 +48,9 @@
     <Compile Update="Controls\LabeledInput.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\InvoicePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\AddCar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
