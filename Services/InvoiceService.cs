@@ -7,7 +7,7 @@ using PHILOBM.Services.Interfaces;
 using System.IO;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
-using PHILOBM.Constants;
+using PHILOBM.ConstantsSettings;
 
 namespace PHILOBM.Services;
 
@@ -243,7 +243,7 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         }
 
         // Chemin du dossier de téléchargement
-        string directoryPath = ConstantsSettings.DownloadPath;
+        string directoryPath = Constants.DownloadPath;
 
         // Chemin du dossier "Factures" à l'intérieur du dossier de téléchargement
         string facturesDirectory = Path.Combine(directoryPath, "Factures");
@@ -361,7 +361,7 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         }
 
         // Chemin du dossier de téléchargement
-        directoryPath = ConstantsSettings.DownloadPath;
+        directoryPath = Constants.DownloadPath;
 
         // Chemin du dossier "Factures" à l'intérieur du dossier de téléchargement
         string facturesDirectory = Path.Combine(directoryPath, "Factures");

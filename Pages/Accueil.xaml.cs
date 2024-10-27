@@ -1,4 +1,4 @@
-﻿using PHILOBM.Constants;
+﻿using PHILOBM.ConstantsSettings;
 using PHILOBM.Pages;
 using PHILOBM.Services;
 using System.Diagnostics;
@@ -24,6 +24,6 @@ public partial class Accueil : Page
     private void OpenDbLocation_Click(object sender, RoutedEventArgs e)
     {
         //string dbPath = Path.Combine(ConstantsSettings.RacinePath, ConstantsSettings.DBName);
-        Outils.OpenFolder(ConstantsSettings.RacinePath);
+        Outils.OpenFolder(Constants.RacinePath);
     }
 }

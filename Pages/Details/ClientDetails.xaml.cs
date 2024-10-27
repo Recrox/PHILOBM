@@ -141,7 +141,7 @@ public partial class ClientDetails : Page
             if (result == MessageBoxResult.Yes)
             {
                 await _carService.DeleteAsync(carToDelete.Id); // Suppression de la voiture
-                RefreshClientDetails(_client.Id);
+                await RefreshClientDetails(_client.Id);
             }
         }
     }

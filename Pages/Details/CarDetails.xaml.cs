@@ -49,8 +49,8 @@ public partial class CarDetails : Page
 
         _=LoadClients();
 
-        
 
+        UpdateOrAddCarButton.IsEnabled = false; // Désactiver le bouton
         DataContext = this; // Assurez-vous que le DataContext est bien défini
 
     }

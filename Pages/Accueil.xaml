@@ -2,14 +2,18 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Accueil">
-    <Grid Background="#f5f5f5" Margin="20">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="400">
-            <TextBlock Text="Bienvenue dans PHILO B.M" FontSize="32" FontWeight="Bold" Margin="0,0,0,20" Foreground="#333"/>
-            <TextBlock Text="Gérez vos clients et vos factures facilement." FontSize="20" Margin="0,0,0,20" Foreground="#555"/>
-            <Button Content="Commencer" Width="200" Height="40" Click="Commencer_Click" 
-                    Background="#4CAF50" Foreground="White" FontWeight="Bold" Margin="0,0,0,10"/>
-            <Button Content="Ouvrir l'emplacement de la DB" Width="200" Height="40" Click="OpenDbLocation_Click" 
-                    Background="#2196F3" Foreground="White" FontWeight="Bold"/>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,40">
+
+            <!--<Image Source="Assets/bmw_logo.png" Width="100" Height="100" Margin="0,0,0,20" HorizontalAlignment="Center"/>-->
+            <TextBlock Text="Bienvenue dans PHILO B.M" FontSize="32" FontWeight="Bold" Margin="0,0,0,20" Foreground="#333" TextAlignment="Center"/>
+            <TextBlock Text="Gérez vos clients et vos factures facilement." FontSize="20" Margin="0,0,0,20" Foreground="#555" TextAlignment="Center"/>
+
+            <Button Content="Commencer" Width="300" Height="50" Click="Commencer_Click" 
+                    Style="{StaticResource StyledButton}" FontWeight="Bold" Margin="0,0,0,10"/>
+
+            <Button Content="Ouvrir l'emplacement de la Base de données..." Width="300" Height="50" 
+                    Click="OpenDbLocation_Click" Style="{StaticResource StyledButton}" FontWeight="Bold"/>
         </StackPanel>
     </Grid>
 </Page>

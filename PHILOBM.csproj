@@ -12,7 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\garage_place_building_icon.ico" />
+    <None Remove="Assets\bmw_logo.png" />
+    <None Remove="Assets\garage_place_building.ico" />
     <None Remove="philoBM.db" />
   </ItemGroup>
 
@@ -37,8 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Folder Include="Assets\" />
-    <Resource Include="Assets\garage_place_building_icon.ico">
+	  <Resource Include="Assets\bmw_logo.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+    <Resource Include="Assets\garage_place_building.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
@@ -56,9 +59,6 @@
     <Compile Update="Pages\InvoicePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\AddCar.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Pages\Details\ClientDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -68,12 +68,6 @@
     <Compile Update="Pages\Accueil.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Pages\AddCar.xaml">
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
 
 </Project>

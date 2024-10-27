@@ -1,6 +1,6 @@
 ﻿using PHILOBM.Models;
 using Microsoft.EntityFrameworkCore;
-using PHILOBM.Constants;
+using PHILOBM.ConstantsSettings;
 
 namespace PHILOBM.Database;
 

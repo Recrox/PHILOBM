@@ -1,4 +1,4 @@
-﻿using PHILOBM.Constants;
+﻿using PHILOBM.ConstantsSettings;
 using PHILOBM.Models;
 using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
@@ -75,7 +75,7 @@ public partial class InvoicePage : Page
 
     private void OpenDownloadFolder_Click(object sender, RoutedEventArgs e)
     {
-        Outils.OpenFolder(ConstantsSettings.DownloadPath);
+        Outils.OpenFolder(Constants.DownloadPath);
     }
 
     

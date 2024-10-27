@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using PHILOBM.Constants;
+using PHILOBM.ConstantsSettings;
 using Serilog.Events;
 using System.IO;
 
@@ -44,10 +44,10 @@ public partial class App : Application
         services.AddSingleton<MainWindow>();
         services.AddSingleton(provider => new FileService
         {
-            DatabaseFileName = ConstantsSettings.DBName,
-            BackupDirectory = ConstantsSettings.BackupPath,
-            MaxBackupCount = ConstantsSettings.MaxBackupCount,
-            ShowMessageBoxes = ConstantsSettings.ShowMessageBoxes
+            DatabaseFileName = Constants.DBName,
+            BackupDirectory = Constants.BackupPath,
+            MaxBackupCount = Constants.MaxBackupCount,
+            ShowMessageBoxes = Constants.ShowMessageBoxes
         });
         AddDbContextRelative(services);
 
@@ -59,12 +59,10 @@ public partial class App : Application
 
     private static void AddDbContextRelative(IServiceCollection services)
     {
-        Outils.CréerDossierSiInexistant(ConstantsSettings.RacinePath);
-
-        var dbPath = Path.Combine(ConstantsSettings.RacinePath, ConstantsSettings.DBName);
+        Outils.CréerDossierSiInexistant(Constants.RacinePath);
 
         services.AddDbContext<PhiloBMContext>(options =>
-            options.UseSqlite($"Data Source={dbPath}"));
+            options.UseSqlite($"Data Source={Constants.DbPath}"));
     }
 
     //private static void AddDbContextAbsolu(IServiceCollection services)
