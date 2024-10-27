@@ -6,7 +6,9 @@ using PHILOBM.Models;
 using PHILOBM.Services.Interfaces;
 using System.IO;
 using System.Reflection.Metadata;
-using System.Xml.Linq;
+using OfficeOpenXml;
+using System.Drawing;
+using OfficeOpenXml.Style;
 
 namespace PHILOBM.Services;
 
@@ -37,8 +39,6 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         DessinerInformationsClient(gfx, page, invoice, ref yPoint, margin);
         DessinerTableauPlaqueEtKilometrage(gfx, page, invoice, ref yPoint, margin);
         DessinerTableauServices(gfx, document, page, invoice, ref yPoint, margin);
-        DessinerTotal(gfx, document, page, invoice, ref yPoint, margin);
-        DessinerMessagePaiement(gfx, document, page, ref yPoint, margin);
 
         SauvegarderDocument(document, directoryPath, invoice);
     }
@@ -147,56 +147,58 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
 
     private void DessinerTableauServices(XGraphics gfx, PdfDocument document, PdfPage page, Invoice invoice, ref double yPoint, double margin)
     {
-        double colWidth = (page.Width - 2 * margin) / 3;
+        // Définir une largeur fixe pour la colonne "Unité" et "Prix"
+        double unitColWidth = 50; // Largeur pour la colonne "Unité"
+        double priceColWidth = 100; // Largeur pour la colonne "Prix" (suffisante pour 12 chiffres)
+        double descriptionColWidth = (page.Width - 2 * margin - unitColWidth - priceColWidth); // Le reste de l'espace pour "Description"
         double cellHeight = 20;
 
         // Dessiner les en-têtes du tableau
-        DessinerRectangle(gfx, margin, yPoint, colWidth, cellHeight);
-        DessinerRectangle(gfx, margin + colWidth, yPoint, colWidth, cellHeight);
-        DessinerRectangle(gfx, margin + 2 * colWidth, yPoint, colWidth, cellHeight);
+        DessinerRectangle(gfx, margin, yPoint, unitColWidth, cellHeight);
+        DessinerRectangle(gfx, margin + unitColWidth, yPoint, descriptionColWidth, cellHeight);
+        DessinerRectangle(gfx, margin + unitColWidth + descriptionColWidth, yPoint, priceColWidth, cellHeight);
 
         gfx.DrawString("Unité", new XFont("Verdana", 12, XFontStyle.Bold), XBrushes.Black,
-            new XRect(margin, yPoint, colWidth, cellHeight), XStringFormats.Center);
+            new XRect(margin, yPoint, unitColWidth, cellHeight), XStringFormats.Center);
         gfx.DrawString("Description", new XFont("Verdana", 12, XFontStyle.Bold), XBrushes.Black,
-            new XRect(margin + colWidth, yPoint, colWidth, cellHeight), XStringFormats.Center);
+            new XRect(margin + unitColWidth, yPoint, descriptionColWidth, cellHeight), XStringFormats.Center);
         gfx.DrawString("Prix", new XFont("Verdana", 12, XFontStyle.Bold), XBrushes.Black,
-            new XRect(margin + 2 * colWidth, yPoint, colWidth, cellHeight), XStringFormats.Center);
+            new XRect(margin + unitColWidth + descriptionColWidth, yPoint, priceColWidth, cellHeight), XStringFormats.Center);
         yPoint += cellHeight;
 
         foreach (var service in invoice.Services)
         {
             // Vérifier si l'on doit ajouter une nouvelle page
-            if (yPoint + cellHeight > page.Height - 50) // Laisser un marge de 50 points en bas
+            if (yPoint + cellHeight > page.Height - 50) // Laisser une marge de 50 points en bas
             {
                 page = document.AddPage();
                 gfx = XGraphics.FromPdfPage(page);
                 yPoint = 40; // Réinitialiser yPoint pour la nouvelle page
             }
 
-            DessinerRectangle(gfx, margin, yPoint, colWidth, cellHeight);
-            DessinerRectangle(gfx, margin + colWidth, yPoint, colWidth, cellHeight);
-            DessinerRectangle(gfx, margin + 2 * colWidth, yPoint, colWidth, cellHeight);
+            DessinerRectangle(gfx, margin, yPoint, unitColWidth, cellHeight);
+            DessinerRectangle(gfx, margin + unitColWidth, yPoint, descriptionColWidth, cellHeight);
+            DessinerRectangle(gfx, margin + unitColWidth + descriptionColWidth, yPoint, priceColWidth, cellHeight);
 
             gfx.DrawString(service.Units.ToString(), new XFont("Verdana", 12), XBrushes.Black,
-                new XRect(margin, yPoint, colWidth, cellHeight), XStringFormats.Center);
+                new XRect(margin, yPoint, unitColWidth, cellHeight), XStringFormats.Center);
             gfx.DrawString(service.Description, new XFont("Verdana", 12), XBrushes.Black,
-                new XRect(margin + colWidth, yPoint, colWidth, cellHeight), XStringFormats.CenterLeft);
-            gfx.DrawString($"{service.CalculateCost()} €", new XFont("Verdana", 12), XBrushes.Black,
-                new XRect(margin + 2 * colWidth, yPoint, colWidth, cellHeight), XStringFormats.CenterRight);
+                new XRect(margin + unitColWidth, yPoint, descriptionColWidth, cellHeight), XStringFormats.CenterLeft);
+            gfx.DrawString($"{service.CalculateCost():F2} €", new XFont("Verdana", 12), XBrushes.Black, // Format avec deux décimales
+                new XRect(margin + unitColWidth + descriptionColWidth, yPoint, priceColWidth, cellHeight), XStringFormats.CenterRight);
             yPoint += cellHeight;
         }
-    }
 
+        // Appel à DessinerTotal après le tableau
+        DessinerTotal(gfx, document, page, invoice, ref yPoint, margin);
 
-    private void DessinerRectangle(XGraphics gfx, double x, double y, double width, double height)
-    {
-        gfx.DrawRectangle(XPens.Black, x, y, width, height);
+        // Appel à DessinerMessagePaiement après le total
+        DessinerMessagePaiement(gfx, document, page, ref yPoint, margin);
     }
 
     private void DessinerTotal(XGraphics gfx, PdfDocument document, PdfPage page, Invoice invoice, ref double yPoint, double margin)
     {
-        yPoint += 10;
-        double colWidth = (page.Width - 2 * margin) / 3;
+        yPoint += 10; // Ajout d'un espace avant le total
         double totalHeight = 20; // Hauteur de la zone de texte du total
 
         // Vérification si yPoint dépasse la hauteur de la page
@@ -209,7 +211,7 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
 
         // Placer le total à la fin de la page
         gfx.DrawString($"Total: {invoice.CalculSum()} €", new XFont("Verdana", 14, XFontStyle.Bold), XBrushes.Black,
-            new XRect(margin + 2 * colWidth, yPoint, colWidth, totalHeight), XStringFormats.CenterRight);
+            new XRect(margin, yPoint, page.Width - 2 * margin, totalHeight), XStringFormats.CenterRight);
         yPoint += totalHeight + 10; // Ajuster l'espacement après le total
     }
 
@@ -226,14 +228,19 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         }
 
         yPoint += 10; // Ajouter un espace avant le message de paiement
-                      // Placer le message de paiement à la fin de la page
-        gfx.DrawString("A verser sur le numéro de compte BE51 1262 0722 0675", new XFont("Verdana", 12), XBrushes.Black,
-            new XRect(margin, yPoint, page.Width - 2 * margin, messageHeight), XStringFormats.TopLeft);
+                      // Placer le message de paiement à la fin de la page avec une police en italique
+        gfx.DrawString("A verser sur le numéro de compte BE51 1262 0722 0675",
+            new XFont("Verdana", 12, XFontStyle.Italic), // Changement ici
+            XBrushes.Black,
+            new XRect(margin, yPoint, page.Width - 2 * margin, messageHeight),
+            XStringFormats.TopLeft);
         yPoint += messageHeight + 10; // Ajustez si nécessaire pour un espacement ultérieur
     }
 
-
-
+    private void DessinerRectangle(XGraphics gfx, double x, double y, double width, double height)
+    {
+        gfx.DrawRectangle(XPens.Black, x, y, width, height);
+    }
     private void SauvegarderDocument(PdfDocument document, string directoryPath, Invoice invoice, bool useClientNameAndDate = true)
     {
         string fileName;
@@ -265,4 +272,101 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
 
         return invoices;
     }
+
+
+
+    public void CreerExcel(Invoice invoice)
+    {
+        string directoryPath = "Factures";
+        CréerDossierSiInexistant(directoryPath);
+
+        // Définir le contexte de licence
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Utiliser Commercial si vous avez une licence
+
+        // Créer un nouveau package Excel
+        using (var package = new ExcelPackage())
+        {
+            // Ajouter une nouvelle feuille
+            var worksheet = package.Workbook.Worksheets.Add("Facture");
+
+            // Définir le titre
+            worksheet.Cells[1, 1].Value = "Facture PHILO B.M";
+            worksheet.Cells[1, 1].Style.Font.Size = 20;
+            worksheet.Cells[1, 1].Style.Font.Bold = true;
+            worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            // Adresse du garage
+            string[] garageAddressLines = { "Rue Champ Courtin 16", "7522 Marquain", "0473/95.10.03" };
+            int row = 3; // Ligne à partir de laquelle commencer à écrire les adresses
+            foreach (var line in garageAddressLines)
+            {
+                worksheet.Cells[row++, 1].Value = line;
+            }
+
+            // Informations de la facture
+            worksheet.Cells[row, 1].Value = $"Date : {DateTime.Now:dd/MM/yyyy HH:mm}";
+            worksheet.Cells[row + 1, 1].Value = $"Facture n° : {invoice.Id}";
+            worksheet.Cells[row + 2, 1].Value = $"Adresse client : {invoice.Client.Address}";
+
+            // Informations du client
+            row += 5; // Décalage pour les informations client
+            worksheet.Cells[row++, 1].Value = $"Client: {invoice.Client.FirstName} {invoice.Client.LastName}";
+
+            // Tableau des services
+            row += 2; // Décalage pour le tableau des services
+            worksheet.Cells[row, 1].Value = "Unité";
+            worksheet.Cells[row, 2].Value = "Description";
+            worksheet.Cells[row, 3].Value = "Prix";
+            worksheet.Cells[row, 1, row, 3].Style.Font.Bold = true;
+
+            foreach (var service in invoice.Services)
+            {
+                row++;
+                worksheet.Cells[row, 1].Value = service.Units;
+                worksheet.Cells[row, 2].Value = service.Description;
+                worksheet.Cells[row, 3].Value = service.CalculateCost();
+            }
+
+            // Total
+            row += 2; // Décalage pour le total
+            worksheet.Cells[row, 2].Value = "Total :";
+            worksheet.Cells[row, 3].Value = invoice.CalculSum();
+            worksheet.Cells[row, 2, row, 3].Style.Font.Bold = true;
+
+            // Message de paiement
+            row += 2; // Décalage pour le message de paiement
+            worksheet.Cells[row, 1].Value = "A verser sur le numéro de compte BE51 1262 0722 0675";
+            worksheet.Cells[row, 1].Style.Font.Italic = true;
+
+            // Ajuster la largeur des colonnes
+            worksheet.Column(1).AutoFit();
+            worksheet.Column(2).AutoFit();
+            worksheet.Column(3).AutoFit();
+
+            // Sauvegarder le document Excel
+            SauvegarderExcel(package, directoryPath, invoice);
+        }
+    }
+
+
+    private void SauvegarderExcel(ExcelPackage package, string directoryPath, Invoice invoice, bool useClientNameAndDate = true)
+    {
+        string fileName;
+
+        if (useClientNameAndDate)
+        {
+            // Nom de fichier avec le prénom, le nom du client et la date
+            fileName = $"Facture_{invoice.Client.FirstName}_{invoice.Client.LastName}_{invoice.Date:yyyyMMdd_HHmmss}.xlsx";
+        }
+        else
+        {
+            // Nom de fichier avec l'ID de la facture
+            fileName = $"Facture_{invoice.Id}.xlsx";
+        }
+
+        string filePath = Path.Combine(directoryPath, fileName);
+        FileInfo excelFile = new FileInfo(filePath);
+        package.SaveAs(excelFile);
+    }
+
 }

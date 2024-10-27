@@ -1,5 +1,11 @@
 {
   "ConnectionStrings": {
     "SQLiteDefault": "Data Source=philoBM.db"
+  },
+  "EPPlus": {
+    "ExcelPackage": {
+      "LicenseContext": "NonCommercial" //The license context used
+    }
   }
+}
 }

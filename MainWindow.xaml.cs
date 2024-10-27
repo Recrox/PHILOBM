@@ -35,6 +35,11 @@ public partial class MainWindow : Window
     {
         MainFrame.Content = new GestionClients();
     }
+    
+    private void Invoice_Click(object sender, RoutedEventArgs e)
+    {
+        MainFrame.Content = new InvoicePage();
+    }
 
     private void Apropos_Click(object sender, RoutedEventArgs e)
     {

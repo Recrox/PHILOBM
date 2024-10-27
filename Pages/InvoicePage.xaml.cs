@@ -11,9 +11,9 @@ namespace PHILOBM.Pages;
 public partial class InvoicePage : Page
 {
     private readonly IInvoiceService _invoiceService;
-    private readonly int _selectedClientId; // Stocke l'ID du client sélectionné
+    private readonly int? _selectedClientId; // Stocke l'ID du client sélectionné
     public ObservableCollection<Invoice> Invoices { get; set; } = new ObservableCollection<Invoice>();
-    public InvoicePage(int selectedClientId)
+    public InvoicePage(int? selectedClientId = null)
     {
         InitializeComponent();
         _invoiceService = ServiceLocator.GetService<IInvoiceService>();
@@ -23,18 +23,23 @@ public partial class InvoicePage : Page
         LoadMockInvoices();
     }
 
-    
+
 
     private async void LoadInvoices()
     {
-        // Chargez l'historique des factures pour le client sélectionné
-        // Cela pourrait venir d'un service ou d'une base de données
-        var invoices = await _invoiceService.GetInvoicesForClientAsync(_selectedClientId);
+        // Récupérer les factures en fonction de la sélection du client
+        IEnumerable<Invoice> invoices = _selectedClientId == null
+            ? await _invoiceService.GetAllAsync()
+            : await _invoiceService.GetInvoicesForClientAsync(_selectedClientId.Value);
+
+        // Ajouter les factures à la collection observable
         foreach (var invoice in invoices)
         {
             Invoices.Add(invoice);
         }
     }
+
+
 
     private void PrintInvoice_Click(object sender, RoutedEventArgs e)
     {
@@ -45,6 +50,7 @@ public partial class InvoicePage : Page
             if (invoice != null)
             {
                 _invoiceService.CreerPDF(invoice); // Crée le PDF
+                //_invoiceService.CreerExcel(invoice); 
 
                 // Afficher une fenêtre contextuelle de confirmation
                 MessageBox.Show("La facture a été imprimée avec succès.", "Impression Terminée", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -69,7 +75,7 @@ public partial class InvoicePage : Page
                 FirstName = "Arno",
                 Address = "12 Rue de la Paix, 75002 Paris, France"
             },
-            Car = new Car { LicensePlate = "ABC 123" },
+            Car = new Car { LicensePlate = "ABC 123", Mileage = 56023 },
             Date = DateTime.Now.AddDays(-10),
             Services = new List<Service>
         {
@@ -91,7 +97,7 @@ public partial class InvoicePage : Page
                 FirstName = "Julie",
                 Address = "48 Avenue des Champs-Élysées, 75008 Paris, France"
             },
-            Car = new Car { LicensePlate = "XYZ 789" },
+            Car = new Car { LicensePlate = "XYZ 789", Mileage = 56023 },
             Date = DateTime.Now.AddDays(-5),
             Services = new List<Service>
         {
@@ -113,7 +119,7 @@ public partial class InvoicePage : Page
                 FirstName = "Luc",
                 Address = "15 Place de l'Hôtel de Ville, 69001 Lyon, France"
             },
-            Car = new Car { LicensePlate = "LMN 456" },
+            Car = new Car { LicensePlate = "LMN 456", Mileage = 56023 },
             Date = DateTime.Now.AddDays(-2),
             Services = new List<Service>
         {
@@ -136,7 +142,7 @@ public partial class InvoicePage : Page
                 FirstName = "Claire",
                 Address = "25 Rue de Rivoli, 75001 Paris, France"
             },
-            Car = new Car { LicensePlate = "JKL 890" },
+            Car = new Car { LicensePlate = "JKL 890", Mileage = 56023 },
             Date = DateTime.Now.AddDays(-1),
             Services = new List<Service>
         {
