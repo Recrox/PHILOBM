@@ -1,4 +1,5 @@
 ﻿using PHILOBM.Models;
+using PHILOBM.Pages.Details;
 using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
 using System.Collections.ObjectModel;

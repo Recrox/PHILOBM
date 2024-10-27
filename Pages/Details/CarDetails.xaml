@@ -1,0 +1,60 @@
+﻿<Page x:Class="PHILOBM.Pages.Details.CarDetails"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="clr-namespace:PHILOBM.Controls"
+      Title="Détails de la Voiture">
+
+    <Grid Margin="10">
+        <Grid Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <!-- Pour le ListView -->
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Button Content="Retour" Click="Retour_Click" 
+                    Width="75" Height="30" Margin="0,0,0,10" Grid.Row="0"
+                    HorizontalAlignment="Left"/>
+
+            <TextBlock Text="Détails de la Voiture" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="1"/>
+
+            <StackPanel Grid.Row="2" Margin="0,0,0,5">
+                <Label Content="Marque" FontWeight="Bold"/>
+                <TextBox Name="BrandTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Margin="0,0,0,5">
+                <Label Content="Modèle" FontWeight="Bold"/>
+                <TextBox Name="ModelTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" Margin="0,0,0,5">
+                <Label Content="Numéro de Plaque" FontWeight="Bold"/>
+                <TextBox Name="LicensePlateTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="5" Margin="0,0,0,5">
+                <Label Content="Numéro de Châssis" FontWeight="Bold"/>
+                <TextBox Name="ChassisNumberTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
+            </StackPanel>
+
+            <TextBlock Text="Services associés" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="6" Foreground="Black"/>
+
+            <ListView Name="ServicesListView" Margin="0,0,0,5" Grid.Row="7" ItemsSource="{Binding Services}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Description" Width="200" DisplayMemberBinding="{Binding Description}"/>
+                        <GridViewColumn Header="Prix" Width="100" DisplayMemberBinding="{Binding Price}"/>
+                        <GridViewColumn Header="Unités" Width="80" DisplayMemberBinding="{Binding Units}"/>
+                        <!--<GridViewColumn Header="Coût" Width="100" DisplayMemberBinding="{Binding Path=Price, Converter={StaticResource PriceConverter}}"/>-->
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>

@@ -41,7 +41,6 @@
     <Resource Include="Assets\garage_place_building_icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="philoBM.db" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,13 +50,16 @@
     <Compile Update="Controls\LabeledInput.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\Details\CarDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\InvoicePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\AddCar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\ClientDetails.xaml.cs">
+    <Compile Update="Pages\Details\ClientDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Settings.xaml.cs">

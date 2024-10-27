@@ -4,7 +4,7 @@ using PHILOBM.Services.Interfaces;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace PHILOBM.Pages;
+namespace PHILOBM.Pages.Details;
 
 public partial class ClientDetails : Page
 {
@@ -98,4 +98,20 @@ public partial class ClientDetails : Page
         var invoicePage = new InvoicePage(_client.Id);
         NavigationService.Navigate(invoicePage);
     }
+
+    private void CarsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (CarsListView.SelectedItem is Car selectedCar)
+        {
+            // Vérifiez si une voiture a été sélectionnée
+            if (selectedCar != null)
+            {
+                // Naviguez vers la page de détails de la voiture
+                var carDetailPage = new CarDetails(selectedCar.Id); // Passez l'objet `Car` à votre page de détails
+                NavigationService?.Navigate(carDetailPage); // Utilisez NavigationService pour naviguer
+                CarsListView.SelectedItem = null;
+            }
+        }
+    }
+
 }
