@@ -1,7 +1,4 @@
-﻿
-using PHILOBM.Models.Base;
-
-namespace PHILOBM.Models;
+﻿namespace PHILOBM.Models;
 
 public class ServiceSpecifique : Service
 {

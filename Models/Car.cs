@@ -2,7 +2,7 @@
 
 namespace PHILOBM.Models;
 
-public class Car : BaseEntity
+public class Car : AuditableEntity
 {
     public string? LicensePlate { get; set; } // License plate number
     public string? ChassisNumber { get; set; } // Chassis number

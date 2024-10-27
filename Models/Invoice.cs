@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PHILOBM.Models;
 
-public class Invoice : BaseEntity
+public class Invoice : AuditableEntity
 {
     public Client Client { get; set; } = null!;
     public Car Car { get; set; } = null!;

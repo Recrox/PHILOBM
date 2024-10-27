@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PHILOBM.Database;
 
@@ -10,12 +11,44 @@ using PHILOBM.Database;
 namespace PHILOBM.Migrations
 {
     [DbContext(typeof(PhiloBMContext))]
-    partial class PhiloBMContextModelSnapshot : ModelSnapshot
+    [Migration("20241027132850_AddCarIdToService")]
+    partial class AddCarIdToService
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
+
+            modelBuilder.Entity("PHILOBM.Models.Base.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("InvoiceId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Units")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("Services");
+                });
 
             modelBuilder.Entity("PHILOBM.Models.Car", b =>
                 {
@@ -32,12 +65,6 @@ namespace PHILOBM.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("LicensePlate")
                         .HasColumnType("TEXT");
 
@@ -45,12 +72,6 @@ namespace PHILOBM.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Model")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -69,12 +90,6 @@ namespace PHILOBM.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
@@ -82,12 +97,6 @@ namespace PHILOBM.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
@@ -110,19 +119,7 @@ namespace PHILOBM.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -134,46 +131,17 @@ namespace PHILOBM.Migrations
                     b.ToTable("Invoices");
                 });
 
-            modelBuilder.Entity("PHILOBM.Models.Service", b =>
+            modelBuilder.Entity("PHILOBM.Models.Base.Service", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.HasOne("PHILOBM.Models.Car", "Car")
+                        .WithMany("Services")
+                        .HasForeignKey("CarId");
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("INTEGER");
+                    b.HasOne("PHILOBM.Models.Invoice", null)
+                        .WithMany("Services")
+                        .HasForeignKey("InvoiceId");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("InvoiceId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Units")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.HasIndex("InvoiceId");
-
-                    b.ToTable("Services");
+                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("PHILOBM.Models.Car", b =>
@@ -204,19 +172,6 @@ namespace PHILOBM.Migrations
                     b.Navigation("Car");
 
                     b.Navigation("Client");
-                });
-
-            modelBuilder.Entity("PHILOBM.Models.Service", b =>
-                {
-                    b.HasOne("PHILOBM.Models.Car", "Car")
-                        .WithMany("Services")
-                        .HasForeignKey("CarId");
-
-                    b.HasOne("PHILOBM.Models.Invoice", null)
-                        .WithMany("Services")
-                        .HasForeignKey("InvoiceId");
-
-                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("PHILOBM.Models.Car", b =>

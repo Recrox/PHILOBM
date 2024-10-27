@@ -1,6 +1,8 @@
-﻿namespace PHILOBM.Models.Base;
+﻿using PHILOBM.Models.Base;
 
-public class Service : BaseEntity
+namespace PHILOBM.Models;
+
+public class Service : AuditableEntity
 {
     public string? Description { get; set; }
     public decimal Price { get; set; }
@@ -10,6 +12,6 @@ public class Service : BaseEntity
 
     public decimal CalculateCost()
     {
-        return Price; 
+        return Price;
     }
 }

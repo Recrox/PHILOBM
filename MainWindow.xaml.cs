@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PHILOBM.Pages;
 using PHILOBM.Services;
-using PHILOBM.Services.Interfaces;
 using System.ComponentModel;
-using System.IO;
 using System.Reflection;
 using System.Windows;
 

@@ -5,9 +5,7 @@ using PHILOBM.Database;
 using PHILOBM.Models;
 using PHILOBM.Services.Interfaces;
 using System.IO;
-using System.Reflection.Metadata;
 using OfficeOpenXml;
-using System.Drawing;
 using OfficeOpenXml.Style;
 using PHILOBM.Constants;
 
