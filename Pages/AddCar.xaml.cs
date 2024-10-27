@@ -3,8 +3,6 @@ using System.Windows.Controls;
 using PHILOBM.Models;
 using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace PHILOBM.Pages;
 

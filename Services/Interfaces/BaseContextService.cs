@@ -14,15 +14,9 @@ public abstract class BaseContextService<T> : IBaseContextService<T> where T : B
         _context = context;
     }
 
-    public async Task<List<T>> GetAllAsync()
-    {
-        return await _context.Set<T>().ToListAsync();
-    }
+    public async Task<List<T>> GetAllAsync() => await _context.Set<T>().ToListAsync();
 
-    public async Task<T?> GetByIdAsync(int id)
-    {
-        return await _context.Set<T>().FirstOrDefaultAsync(item => item.Id == id);
-    }
+    public async Task<T?> GetByIdAsync(int id) => await _context.Set<T>().FirstOrDefaultAsync(item => item.Id == id);
 
     public async Task AddAsync(T entity)
     {

@@ -17,13 +17,15 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Imprimer"
-                                        Command="{Binding PrintInvoiceCommand}" 
-                                        ToolTip="Imprimer cette facture"/>
+                                Click="PrintInvoice_Click"
+                                CommandParameter="{Binding}"
+                                ToolTip="Imprimer cette facture"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
+
     </Grid>
 </Page>
