@@ -51,7 +51,7 @@
 
 
         <!-- Bouton Ajouter Client -->
-        <Button Content="Ajouter Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="7"/>
+        <Button Content="Ajouter le Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="7"/>
 
         <!-- Liste des Clients -->
         <ListView Name="ClientsListView" Margin="0,10,0,0" Grid.Row="8" SelectionChanged="ClientsListView_SelectionChanged">

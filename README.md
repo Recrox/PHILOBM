@@ -10,12 +10,14 @@ voir toutes les migrations:
 dotnet ef migrations list
 
 ajouter new migration:
-dotnet ef migrations add AddBrandAndModelToCar
+dotnet ef migrations add InitialCreate
 
 rollback à une ancienne migration:
 dotnet ef database update LastGoodMigration
 
 delete une vieille migration:
 DELETE FROM "__EFMigrationsHistory" WHERE "MigrationId" = 'YourMigrationName';
+
+dotnet ef database drop
 
 

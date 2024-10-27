@@ -4,10 +4,10 @@ namespace PHILOBM.Models;
 
 public class Client : BaseEntity
 {
-    public string? Nom { get; set; }
-    public string? Prenom { get; set; }
-    public string? Adresse { get; set; }
-    public string? Telephone { get; set; }
+    public string? LastName { get; set; }
+    public string? FirstName { get; set; }
+    public string? Adress { get; set; }
+    public string? Phone { get; set; }
     public string? Email { get; set; }
-    public List<Car> Voitures { get; set; } = new List<Car>();
+    public List<Car> Cars { get; set; } = new List<Car>();
 }

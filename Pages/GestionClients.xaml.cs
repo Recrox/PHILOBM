@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using PHILOBM.Models;
+﻿using PHILOBM.Models;
 using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
 using System.Collections.ObjectModel;
@@ -39,9 +38,9 @@ public partial class GestionClients : Page
     private void Rechercher_Click(object sender, RoutedEventArgs e)
     {
         string searchText = RechercheTextBox.Text.ToLower();
-        var filteredClients = Clients.Where(c => c.Nom.ToLower().Contains(searchText) ||
-                                                  c.Prenom.ToLower().Contains(searchText) ||
-                                                  c.Telephone.Contains(searchText) ||
+        var filteredClients = Clients.Where(c => c.LastName.ToLower().Contains(searchText) ||
+                                                  c.FirstName.ToLower().Contains(searchText) ||
+                                                  c.Phone.Contains(searchText) ||
                                                   c.Email.ToLower().Contains(searchText)).ToList();
 
         ClientsListView.ItemsSource = filteredClients;
@@ -54,7 +53,7 @@ public partial class GestionClients : Page
 
         if (clientASupprimer != null)
         {
-            MessageBoxResult result = MessageBox.Show($"Êtes-vous sûr de vouloir supprimer {clientASupprimer.Nom} {clientASupprimer.Prenom} ?",
+            MessageBoxResult result = MessageBox.Show($"Êtes-vous sûr de vouloir supprimer {clientASupprimer.LastName} {clientASupprimer.FirstName} ?",
                 "Confirmation de suppression", MessageBoxButton.YesNo);
 
             if (result == MessageBoxResult.Yes)
@@ -79,11 +78,11 @@ public partial class GestionClients : Page
         // Créer une nouvelle instance de Client à partir des champs de texte
         var client = new Client
         {
-            Nom = NomTextBox.Text,
-            Prenom = PrenomTextBox.Text,
-            Telephone = TelephoneTextBox.Text,
+            LastName = NomTextBox.Text,
+            FirstName = PrenomTextBox.Text,
+            Phone = TelephoneTextBox.Text,
             Email = EmailTextBox.Text,
-            Adresse = AdresseTextBox.Text,
+            Adress = AdresseTextBox.Text,
         };
 
         await _clientService.AddAsync(client);

@@ -11,7 +11,7 @@ using PHILOBM.Database;
 namespace PHILOBM.Migrations
 {
     [DbContext(typeof(PhiloBMContext))]
-    [Migration("20241027051851_InitialCreate")]
+    [Migration("20241027072748_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -29,17 +29,48 @@ namespace PHILOBM.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("FactureId")
+                    b.Property<int?>("InvoiceId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Prix")
+                    b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FactureId");
+                    b.HasIndex("InvoiceId");
 
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("PHILOBM.Models.Car", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Brand")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ChassisNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("LicensePlate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Mileage")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("PHILOBM.Models.Client", b =>
@@ -68,10 +99,13 @@ namespace PHILOBM.Migrations
                     b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("PHILOBM.Models.Facture", b =>
+            modelBuilder.Entity("PHILOBM.Models.Invoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CarId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ClientId")
@@ -80,78 +114,50 @@ namespace PHILOBM.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("VoitureId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CarId");
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("VoitureId");
-
-                    b.ToTable("Factures");
-                });
-
-            modelBuilder.Entity("PHILOBM.Models.Voiture", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Kilometrage")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("NumeroChassis")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NumeroPlaque")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.ToTable("Voitures");
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("PHILOBM.Models.Base.Service", b =>
                 {
-                    b.HasOne("PHILOBM.Models.Facture", null)
+                    b.HasOne("PHILOBM.Models.Invoice", null)
                         .WithMany("Services")
-                        .HasForeignKey("FactureId");
+                        .HasForeignKey("InvoiceId");
                 });
 
-            modelBuilder.Entity("PHILOBM.Models.Facture", b =>
+            modelBuilder.Entity("PHILOBM.Models.Car", b =>
                 {
+                    b.HasOne("PHILOBM.Models.Client", "Owner")
+                        .WithMany("Voitures")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("PHILOBM.Models.Invoice", b =>
+                {
+                    b.HasOne("PHILOBM.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PHILOBM.Models.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PHILOBM.Models.Voiture", "Voiture")
-                        .WithMany()
-                        .HasForeignKey("VoitureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Car");
 
                     b.Navigation("Client");
-
-                    b.Navigation("Voiture");
-                });
-
-            modelBuilder.Entity("PHILOBM.Models.Voiture", b =>
-                {
-                    b.HasOne("PHILOBM.Models.Client", "Proprietaire")
-                        .WithMany("Voitures")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Proprietaire");
                 });
 
             modelBuilder.Entity("PHILOBM.Models.Client", b =>
@@ -159,7 +165,7 @@ namespace PHILOBM.Migrations
                     b.Navigation("Voitures");
                 });
 
-            modelBuilder.Entity("PHILOBM.Models.Facture", b =>
+            modelBuilder.Entity("PHILOBM.Models.Invoice", b =>
                 {
                     b.Navigation("Services");
                 });

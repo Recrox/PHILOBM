@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using PHILOBM.Models;
+﻿using PHILOBM.Models;
 using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
 using System.Windows;
@@ -12,7 +11,7 @@ public partial class ClientDetails : Page
     private readonly IClientService _clientService;
     private readonly ICarService _carService;
     private Client _client;
-    private bool _isModified = false; // Ajout de la variable pour suivre les modifications
+    
 
     public ClientDetails(int clientId)
     {
@@ -22,23 +21,23 @@ public partial class ClientDetails : Page
 
 
         // Load client data into text boxes
-        LoadClientDetails(clientId);
+        RefreshClientDetails(clientId);
 
         // Désactiver le bouton de mise à jour au démarrage
         UpdateClientButton.IsEnabled = false; // Assurez-vous que le bouton a ce nom
     }
 
-    private async void LoadClientDetails(int clientId)
+    private async void RefreshClientDetails(int clientId)
     {
         _client = await _clientService.GetClientByIdWithCarsAsync(clientId) ?? throw new Exception("Client don't exist");
 
-        NameTextBox.Text = _client.Nom;
-        FirstNameTextBox.Text = _client.Prenom;
-        PhoneTextBox.Text = _client.Telephone;
+        NameTextBox.Text = _client.LastName;
+        FirstNameTextBox.Text = _client.FirstName;
+        PhoneTextBox.Text = _client.Phone;
         EmailTextBox.Text = _client.Email;
 
         // Utiliser le ListView pour afficher les voitures
-        CarsListView.ItemsSource = _client.Voitures; // Utilisez ItemsSource pour lier la collection de voitures
+        CarsListView.ItemsSource = _client.Cars; // Utilisez ItemsSource pour lier la collection de voitures
 
 
         // Ajoutez des gestionnaires d'événements pour détecter les modifications
@@ -50,23 +49,20 @@ public partial class ClientDetails : Page
 
     private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        // Vérifiez si les données ont changé
-        _isModified = true;
         UpdateClientButton.IsEnabled = true; // Activez le bouton de mise à jour
     }
 
     private async void UpdateClient_Click(object sender, RoutedEventArgs e)
     {
         // Update client details from the text boxes
-        _client.Nom = NameTextBox.Text;
-        _client.Prenom = FirstNameTextBox.Text;
-        _client.Telephone = PhoneTextBox.Text;
+        _client.LastName = NameTextBox.Text;
+        _client.FirstName = FirstNameTextBox.Text;
+        _client.Phone = PhoneTextBox.Text;
         _client.Email = EmailTextBox.Text;
 
         await _clientService.UpdateAsync(_client); // Ensure this method exists
         //MessageBox.Show("Client updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
-        _isModified = false;
         UpdateClientButton.IsEnabled = false; // Désactivez à nouveau le bouton
     }
 
@@ -98,8 +94,8 @@ public partial class ClientDetails : Page
 
             if (result == MessageBoxResult.Yes)
             {
-                await _clientService.DeleteAsync(carToDelete.Id); // Suppression de la voiture
-                LoadClientDetails(_client.Id);
+                await _carService.DeleteAsync(carToDelete.Id); // Suppression de la voiture
+                RefreshClientDetails(_client.Id);
             }
         }
     }

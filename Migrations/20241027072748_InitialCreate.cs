@@ -29,21 +29,23 @@ namespace PHILOBM.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Voitures",
+                name: "Cars",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    NumeroPlaque = table.Column<string>(type: "TEXT", nullable: true),
-                    NumeroChassis = table.Column<string>(type: "TEXT", nullable: true),
-                    Kilometrage = table.Column<int>(type: "INTEGER", nullable: false),
-                    ClientId = table.Column<int>(type: "INTEGER", nullable: false)
+                    LicensePlate = table.Column<string>(type: "TEXT", nullable: true),
+                    ChassisNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    Mileage = table.Column<int>(type: "INTEGER", nullable: false),
+                    ClientId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Brand = table.Column<string>(type: "TEXT", nullable: true),
+                    Model = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Voitures", x => x.Id);
+                    table.PrimaryKey("PK_Cars", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Voitures_Clients_ClientId",
+                        name: "FK_Cars_Clients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Clients",
                         principalColumn: "Id",
@@ -51,28 +53,28 @@ namespace PHILOBM.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Factures",
+                name: "Invoices",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ClientId = table.Column<int>(type: "INTEGER", nullable: false),
-                    VoitureId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CarId = table.Column<int>(type: "INTEGER", nullable: false),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Factures", x => x.Id);
+                    table.PrimaryKey("PK_Invoices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Factures_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
+                        name: "FK_Invoices_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Factures_Voitures_VoitureId",
-                        column: x => x.VoitureId,
-                        principalTable: "Voitures",
+                        name: "FK_Invoices_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -84,38 +86,38 @@ namespace PHILOBM.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
-                    Prix = table.Column<decimal>(type: "TEXT", nullable: false),
-                    FactureId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Price = table.Column<decimal>(type: "TEXT", nullable: false),
+                    InvoiceId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Services", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Services_Factures_FactureId",
-                        column: x => x.FactureId,
-                        principalTable: "Factures",
+                        name: "FK_Services_Invoices_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalTable: "Invoices",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Factures_ClientId",
-                table: "Factures",
+                name: "IX_Cars_ClientId",
+                table: "Cars",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Factures_VoitureId",
-                table: "Factures",
-                column: "VoitureId");
+                name: "IX_Invoices_CarId",
+                table: "Invoices",
+                column: "CarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_FactureId",
+                name: "IX_Invoices_ClientId",
+                table: "Invoices",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Services_InvoiceId",
                 table: "Services",
-                column: "FactureId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Voitures_ClientId",
-                table: "Voitures",
-                column: "ClientId");
+                column: "InvoiceId");
         }
 
         /// <inheritdoc />
@@ -125,10 +127,10 @@ namespace PHILOBM.Migrations
                 name: "Services");
 
             migrationBuilder.DropTable(
-                name: "Factures");
+                name: "Invoices");
 
             migrationBuilder.DropTable(
-                name: "Voitures");
+                name: "Cars");
 
             migrationBuilder.DropTable(
                 name: "Clients");
