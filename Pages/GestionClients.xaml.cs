@@ -17,6 +17,8 @@ public partial class GestionClients : Page
     {
         InitializeComponent();
         Clients = new ObservableCollection<Client>();
+        // Ajouter quelques clients pour tester
+        
         ClientsListView.ItemsSource = Clients;
 
         var clientService = ServiceLocator.GetService<IClientService>();
@@ -60,7 +62,6 @@ public partial class GestionClients : Page
             {
                 await _clientService.DeleteAsync(clientASupprimer.Id);
                 await this.RefreshClientsAsync();
-                // Optionnel : Supprimez le client de la base de données ici si nécessaire
             }
         }
     }

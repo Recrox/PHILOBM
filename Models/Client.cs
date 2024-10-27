@@ -1,4 +1,5 @@
 ﻿using PHILOBM.Models.Base;
+using System.Collections.ObjectModel;
 
 namespace PHILOBM.Models;
 
@@ -9,5 +10,5 @@ public class Client : BaseEntity
     public string? Adress { get; set; }
     public string? Phone { get; set; }
     public string? Email { get; set; }
-    public List<Car> Cars { get; set; } = new List<Car>();
+    public ObservableCollection<Car> Cars { get; set; } = new ObservableCollection<Car>();
 }

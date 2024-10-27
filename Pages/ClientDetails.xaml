@@ -17,7 +17,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <!-- Ajustez ici -->
+                <RowDefinition Height="Auto"/>
+                <!-- Ajouté pour le ListView -->
             </Grid.RowDefinitions>
 
             <Button Content="Retour" Click="Retour_Click" 
@@ -28,38 +29,49 @@
 
             <StackPanel Grid.Row="3" Margin="0,0,0,5">
                 <Label Content="Nom" FontWeight="Bold"/>
-                <TextBox Name="NameTextBox" Margin="0,0,0,5"/>
+                <TextBox Name="NameTextBox" Margin="0,0,0,5" Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="4" Margin="0,0,0,5">
                 <Label Content="Prénom" FontWeight="Bold"/>
-                <TextBox Name="FirstNameTextBox" Margin="0,0,0,5"/>
+                <TextBox Name="FirstNameTextBox" Margin="0,0,0,5" Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="5" Margin="0,0,0,5">
                 <Label Content="Téléphone" FontWeight="Bold"/>
-                <TextBox Name="PhoneTextBox" Margin="0,0,0,5"/>
+                <TextBox Name="PhoneTextBox" Margin="0,0,0,5" Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="6" Margin="0,0,0,5">
                 <Label Content="Email" FontWeight="Bold"/>
-                <TextBox Name="EmailTextBox" Margin="0,0,0,5"/>
+                <TextBox Name="EmailTextBox" Margin="0,0,0,5" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="7" Margin="0,0,0,5">
+                <Label Content="Adresse" FontWeight="Bold"/>
+                <TextBox Name="AddressTextBox" Margin="0,0,0,5" Text="{Binding Adress, UpdateSourceTrigger=PropertyChanged}"/>
+                <!-- Ajouté pour l'adresse -->
             </StackPanel>
 
             <Button Name="UpdateClientButton" Content="Mettre à jour le client" Click="UpdateClient_Click" 
-                    Width="120" Height="30" Margin="0,10,0,0" Grid.Row="7"
+                    Width="120" Height="30" Margin="0,10,0,0" Grid.Row="8"
                     HorizontalAlignment="Left"/>
 
             <Button Content="Ajouter une Voiture" Click="AddCarButton_Click" 
-                Width="120" Height="30" Margin="0,10,0,0" Grid.Row="8"
+                Width="120" Height="30" Margin="0,10,0,0" Grid.Row="9"
                 HorizontalAlignment="Left"/>
 
-            <ListView Name="CarsListView" Margin="0,0,0,5" Grid.Row="9">
+            <ListView Name="CarsListView" Margin="0,0,0,5" Grid.Row="10" ItemsSource="{Binding Cars}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Marque" Width="120" DisplayMemberBinding="{Binding Marque}"/>
-                        <GridViewColumn Header="Modèle" Width="120" DisplayMemberBinding="{Binding Modele}"/>
-                        <GridViewColumn Header="Année" Width="80" DisplayMemberBinding="{Binding Annee}"/>
+                        <GridViewColumn Header="Marque" Width="120" DisplayMemberBinding="{Binding Brand}"/>
+                        <GridViewColumn Header="Modèle" Width="120" DisplayMemberBinding="{Binding Model}"/>
+                        <GridViewColumn Header="Numéro de Plaque" Width="120" DisplayMemberBinding="{Binding LicensePlate}"/>
+                        <!-- Ajouté -->
+                        <GridViewColumn Header="Numéro de Châssis" Width="120" DisplayMemberBinding="{Binding ChassisNumber}"/>
+                        <!-- Ajouté -->
+                        <GridViewColumn Header="Kilométrage" Width="80" DisplayMemberBinding="{Binding Mileage}"/>
+                        <!-- Ajouté -->
                         <GridViewColumn Header="Actions" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -73,6 +85,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+
 
         </Grid>
     </Grid>

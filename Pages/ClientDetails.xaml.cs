@@ -11,7 +11,6 @@ public partial class ClientDetails : Page
     private readonly IClientService _clientService;
     private readonly ICarService _carService;
     private Client _client;
-    
 
     public ClientDetails(int clientId)
     {
