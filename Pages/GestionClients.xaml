@@ -11,7 +11,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/> <!-- Row for the button -->
+            <RowDefinition Height="*"/> <!-- Row for the ListView -->
         </Grid.RowDefinitions>
 
         <TextBlock Text="Gestion des Clients" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" Grid.Row="0"/>
@@ -23,35 +24,31 @@
             <Button Content="Rechercher" Click="Rechercher_Click"/>
         </StackPanel>
 
-        <!-- Champ Nom -->
         <StackPanel Margin="0,0,0,5" Grid.Row="2">
             <Label Content="Nom" Foreground="Black" FontWeight="Bold"/>
-            <TextBox Name="NomTextBox" Margin="0,0,0,5"/>
+            <TextBox Name="NomTextBox" Margin="0,0,0,5" KeyDown="TextBox_KeyDown"/>
         </StackPanel>
 
-        <!-- Champ Prénom -->
         <StackPanel Margin="0,0,0,5" Grid.Row="3">
             <Label Content="Prénom" Foreground="Black" FontWeight="Bold"/>
-            <TextBox Name="PrenomTextBox" Margin="0,0,0,5"/>
+            <TextBox Name="PrenomTextBox" Margin="0,0,0,5" KeyDown="TextBox_KeyDown"/>
         </StackPanel>
 
-        <!-- Champ Téléphone -->
         <StackPanel Margin="0,0,0,5" Grid.Row="4">
             <Label Content="Téléphone" Foreground="Black" FontWeight="Bold"/>
-            <TextBox Name="TelephoneTextBox" Margin="0,0,0,5"/>
+            <TextBox Name="TelephoneTextBox" Margin="0,0,0,5" KeyDown="TextBox_KeyDown"/>
         </StackPanel>
 
-        <!-- Champ Email -->
         <StackPanel Margin="0,0,0,5" Grid.Row="5">
             <Label Content="Email" Foreground="Black" FontWeight="Bold"/>
-            <TextBox Name="EmailTextBox" Margin="0,0,0,5"/>
+            <TextBox Name="EmailTextBox" Margin="0,0,0,5" KeyDown="TextBox_KeyDown"/>
         </StackPanel>
 
-         <!--Champ Adresse--> 
         <StackPanel Margin="0,0,0,5" Grid.Row="6">
             <Label Content="Adresse" Foreground="Black" FontWeight="Bold"/>
-            <TextBox Name="AdresseTextBox" Margin="0,0,0,5"/>
+            <TextBox Name="AdresseTextBox" Margin="0,0,0,5" KeyDown="TextBox_KeyDown"/>
         </StackPanel>
+
 
         <!-- Bouton Ajouter Client -->
         <Button Content="Ajouter Client" Click="AjouterClient_Click" Margin="0,10,0,0" Grid.Row="7"/>

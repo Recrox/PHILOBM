@@ -54,6 +54,7 @@ public partial class App : Application
         services.AddDbContext<PhiloBMContext>(options =>
                 options.UseSqlite($"Data Source={ConstantsSettings.DBName}"));
         services.AddScoped<IClientService, ClientService>();
+        services.AddScoped<ICarService, CarService>();
         services.AddLogging();
     }
 

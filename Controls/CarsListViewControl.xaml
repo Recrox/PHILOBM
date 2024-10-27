@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="PHILOBM.Controls.CarsListViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="Auto" Height="Auto">
+    <StackPanel Margin="0,10,0,5">
+        <Label Content="Voitures" FontWeight="Bold"/>
+        <ListView Name="CarsListView" Margin="0,0,0,5">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Marque" Width="120" DisplayMemberBinding="{Binding Marque}"/>
+                    <GridViewColumn Header="Modèle" Width="120" DisplayMemberBinding="{Binding Modele}"/>
+                    <GridViewColumn Header="Année" Width="80" DisplayMemberBinding="{Binding Annee}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </StackPanel>
+</UserControl>

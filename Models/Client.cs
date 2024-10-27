@@ -9,5 +9,5 @@ public class Client : BaseEntity
     public string? Adresse { get; set; }
     public string? Telephone { get; set; }
     public string? Email { get; set; }
-    public List<Voiture> Voitures { get; set; } = new List<Voiture>();
+    public List<Car> Voitures { get; set; } = new List<Car>();
 }

@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PHILOBM.Models;
+using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PHILOBM.Pages;
 
@@ -18,7 +20,7 @@ public partial class GestionClients : Page
         Clients = new ObservableCollection<Client>();
         ClientsListView.ItemsSource = Clients;
 
-        var clientService = App.AppHost.Services.GetRequiredService<IClientService>();
+        var clientService = ServiceLocator.GetService<IClientService>();
         _clientService = clientService;
         // Récupérer le service à partir du conteneur DI
         _ = RefreshClientsAsync(); // Charger les clients lors de l'initialisation
@@ -27,7 +29,7 @@ public partial class GestionClients : Page
     private async Task RefreshClientsAsync()
     {
         Clients.Clear();
-        var clients = await _clientService.GetAll();
+        var clients = await _clientService.GetAllAsync();
         foreach (var client in clients)
         {
             Clients.Add(client);
@@ -57,7 +59,7 @@ public partial class GestionClients : Page
 
             if (result == MessageBoxResult.Yes)
             {
-                await _clientService.Delete(clientASupprimer.Id);
+                await _clientService.DeleteAsync(clientASupprimer.Id);
                 await this.RefreshClientsAsync();
                 // Optionnel : Supprimez le client de la base de données ici si nécessaire
             }
@@ -66,9 +68,10 @@ public partial class GestionClients : Page
 
     private async void AjouterClient_Click(object sender, RoutedEventArgs e)
     {
-        // Vérifiez si tous les champs sont valides
-        if (!IsAnyFieldValid())
+        // Vérifiez si les champs du client sont valides
+        if (!IsClientValid())
         {
+            //MessageBox.Show("Veuillez vérifier les informations saisies.\nLe nom doit contenir au moins 3 lettres et le numéro de téléphone doit être valide.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
             MessageBox.Show("Veuillez remplir au moins un champ.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -83,23 +86,37 @@ public partial class GestionClients : Page
             Adresse = AdresseTextBox.Text,
         };
 
-        await _clientService.Add(client);
+        await _clientService.AddAsync(client);
         await this.RefreshClientsAsync();
         ClearTextBox();
     }
 
-    private bool IsAnyFieldValid()
+    private bool IsClientValid()
     {
-        // Vérifiez tous les champs directement
-        return !string.IsNullOrWhiteSpace(NomTextBox.Text) ||
-               !string.IsNullOrWhiteSpace(PrenomTextBox.Text) ||
-               !string.IsNullOrWhiteSpace(TelephoneTextBox.Text) ||
-               !string.IsNullOrWhiteSpace(EmailTextBox.Text)
-               || !string.IsNullOrWhiteSpace(AdresseTextBox.Text)
-               ;
+        //if (!string.IsNullOrWhiteSpace(NomTextBox.Text) && NomTextBox.Text.Length < 3)
+        //    return false;
+
+        //if (!IsPhoneNumberValid(TelephoneTextBox.Text))
+        //    return false;
+
+        return IsAnyFieldValid();
     }
 
+    private bool IsPhoneNumberValid(string phoneNumber)
+    {
+        return !string.IsNullOrWhiteSpace(phoneNumber) &&
+               phoneNumber.All(char.IsDigit) &&
+               phoneNumber.Length >= 7; // Exemple de longueur minimale pour un numéro de téléphone
+    }
 
+    private bool IsAnyFieldValid()
+    {
+        return !string.IsNullOrWhiteSpace(PrenomTextBox.Text) ||
+                !string.IsNullOrWhiteSpace(NomTextBox.Text) ||
+               !string.IsNullOrWhiteSpace(EmailTextBox.Text) ||
+               !string.IsNullOrWhiteSpace(TelephoneTextBox.Text) ||
+               !string.IsNullOrWhiteSpace(AdresseTextBox.Text);
+    }
 
 
     private void ClientsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -120,5 +137,16 @@ public partial class GestionClients : Page
         PrenomTextBox.Clear();
         TelephoneTextBox.Clear();
         EmailTextBox.Clear();
+        AdresseTextBox.Clear();
+    }
+
+    private void TextBox_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            // Appeler la méthode d'ajout de client
+            this.AjouterClient_Click(sender, e);
+            e.Handled = true; // Empêche le son de "ding" lorsque Enter est pressé
+        }
     }
 }

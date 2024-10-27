@@ -13,24 +13,29 @@ public abstract class BaseContextService<T> : IBaseContextService<T> where T : c
         _context = context;
     }
 
-    public async Task Add(T entity)
+    public async Task<List<T>> GetAllAsync()
+    {
+        return await _context.Set<T>().ToListAsync();
+    }
+
+    public async Task<T?> GetByIdAsync(int id)
+    {
+        return await _context.Set<T>().FindAsync(id);
+    }
+
+    public async Task AddAsync(T entity)
     {
         _context.Set<T>().Add(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<T>> GetAll()
-    {
-        return await _context.Set<T>().ToListAsync();
-    }
-
-    public async Task Update(T entity)
+    public async Task UpdateAsync(T entity)
     {
         _context.Set<T>().Update(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task Delete(int id)
+    public async Task DeleteAsync(int id)
     {
         var entity = await _context.Set<T>().FindAsync(id);
         if (entity != null)

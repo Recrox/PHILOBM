@@ -2,8 +2,9 @@
 
 public interface IBaseContextService<T>
 {
-    Task Add(T entity);
-    Task<List<T>> GetAll();
-    Task Update(T entity);
-    Task Delete(int id);
+    Task<List<T>> GetAllAsync();
+    Task<T?> GetByIdAsync(int id);
+    Task AddAsync(T entity);
+    Task UpdateAsync(T entity);
+    Task DeleteAsync(int id);
 }

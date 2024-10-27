@@ -11,7 +11,7 @@ using PHILOBM.Database;
 namespace PHILOBM.Migrations
 {
     [DbContext(typeof(PhiloBMContext))]
-    [Migration("20241026221940_InitialCreate")]
+    [Migration("20241027051851_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

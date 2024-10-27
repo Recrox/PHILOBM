@@ -8,7 +8,7 @@ namespace PHILOBM.Models;
 public class Facture : BaseEntity
 {
     public Client Client { get; set; } = null!;
-    public Voiture Voiture { get; set; } = null!;
+    public Car Voiture { get; set; } = null!;
     public DateTime Date { get; set; }
     public List<Service> Services { get; set; } = new List<Service>();
 

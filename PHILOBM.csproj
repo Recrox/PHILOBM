@@ -42,7 +42,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Pages\LabeledInput.xaml.cs">
+    <Compile Update="Controls\CarsListViewControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\LabeledInput.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\AddCar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\ClientDetails.xaml.cs">
@@ -54,6 +60,12 @@
     <Compile Update="Pages\Accueil.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Pages\AddCar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>
