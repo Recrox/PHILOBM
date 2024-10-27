@@ -39,16 +39,6 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         SauvegarderDocument(document, invoice);
     }
 
-    // Sous-méthodes pour chaque section
-
-    private void CréerDossierSiInexistant(string path)
-    {
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
-    }
-
     private void DessinerTitre(XGraphics gfx, PdfPage page, ref double yPoint)
     {
         gfx.DrawString("Facture PHILO B.M", new XFont("Verdana", 20, XFontStyle.Bold), XBrushes.Black,
@@ -259,7 +249,7 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         string facturesDirectory = Path.Combine(directoryPath, "Factures");
 
         // Créer le dossier "Factures" s'il n'existe pas
-        CréerDossierSiInexistant(facturesDirectory);
+        Outils.CréerDossierSiInexistant(facturesDirectory);
 
         // Chemin complet du fichier PDF
         string filePath = Path.Combine(facturesDirectory, fileName);
@@ -284,7 +274,7 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
     public void CreerExcel(Invoice invoice)
     {
         string directoryPath = "Factures";
-        CréerDossierSiInexistant(directoryPath);
+        Outils.CréerDossierSiInexistant(directoryPath);
 
         // Définir le contexte de licence
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Utiliser Commercial si vous avez une licence

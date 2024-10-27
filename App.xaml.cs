@@ -59,12 +59,9 @@ public partial class App : Application
 
     private static void AddDbContextRelative(IServiceCollection services)
     {
-        var dbDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Database");
-        if (!Directory.Exists(dbDirectory))
-        {
-            Directory.CreateDirectory(dbDirectory);
-        }
-        var dbPath = Path.Combine(dbDirectory, ConstantsSettings.DBName);
+        Outils.CréerDossierSiInexistant(ConstantsSettings.RacinePath);
+
+        var dbPath = Path.Combine(ConstantsSettings.RacinePath, ConstantsSettings.DBName);
 
         services.AddDbContext<PhiloBMContext>(options =>
             options.UseSqlite($"Data Source={dbPath}"));
