@@ -8,15 +8,29 @@
         <Grid Margin="0,10,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <!-- 0 Retour -->
                 <RowDefinition Height="Auto"/>
+                <!-- 1 Titre -->
                 <RowDefinition Height="Auto"/>
+                <!-- 2 Marque -->
                 <RowDefinition Height="Auto"/>
+                <!-- 3 Modèle -->
                 <RowDefinition Height="Auto"/>
+                <!-- 4 Numéro de Plaque -->
                 <RowDefinition Height="Auto"/>
+                <!-- 5 Numéro de Châssis -->
+                <RowDefinition Height="Auto"/>
+                <!-- 6 Kilométrage -->
+                <RowDefinition Height="Auto"/>
+                <!-- 7 Client -->
+                <RowDefinition Height="Auto"/>
+                <!-- 8 Bouton Ajouter/Mettre à jour -->
+                <RowDefinition Height="Auto"/>
+                <!-- 9 Titre Services -->
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <!-- 10 Liste des Services -->
             </Grid.RowDefinitions>
+
 
             <Button Content="Retour" Click="Retour_Click" 
                     Width="75" Height="30" Margin="0,0,0,10" Grid.Row="0"
@@ -25,38 +39,39 @@
             <TextBlock Text="Détails de la Voiture" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="1"/>
 
             <StackPanel Grid.Row="2" Margin="0,0,0,5">
-                <Label Content="Marque" FontWeight="Bold"/>
-                <TextBox Name="BrandTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
+                <Label Content="Marque" FontWeight="Bold"  />
+                <TextBox Name="BrandTextBox" Margin="0,0,0,5" TextChanged="TextBox_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Row="3" Margin="0,0,0,5">
-                <Label Content="Modèle" FontWeight="Bold"/>
-                <TextBox Name="ModelTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
+                <Label Content="Modèle" FontWeight="Bold"  />
+                <TextBox Name="ModelTextBox" Margin="0,0,0,5" TextChanged="TextBox_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Row="4" Margin="0,0,0,5">
-                <Label Content="Numéro de Plaque" FontWeight="Bold"/>
-                <TextBox Name="LicensePlateTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
+                <Label Content="Numéro de Plaque" FontWeight="Bold"  />
+                <TextBox Name="LicensePlateTextBox" Margin="0,0,0,5" TextChanged="TextBox_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Row="5" Margin="0,0,0,5">
-                <Label Content="Numéro de Châssis" FontWeight="Bold"/>
-                <TextBox Name="ChassisNumberTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
+                <Label Content="Numéro de Châssis" FontWeight="Bold"  />
+                <TextBox Name="ChassisNumberTextBox" Margin="0,0,0,5" TextChanged="TextBox_TextChanged"/>
             </StackPanel>
 
             <StackPanel Grid.Row="6" Margin="0,0,0,5">
-                <Label Content="Kilométrage" FontWeight="Bold"/>
-                <TextBox Name="MileageTextBox" Margin="0,0,0,5" IsReadOnly="True"/>
+                <Label Content="Kilométrage" FontWeight="Bold" />
+                <TextBox Name="MileageTextBox" Margin="0,0,0,5"  TextChanged="TextBox_TextChanged"/>
             </StackPanel>
 
+            <ComboBox x:Name="ClientComboBox" SelectedValuePath="Id" DisplayMemberPath="FullName" Grid.Row="7" />
 
             <Button Name="UpdateOrAddCarButton" Content="{Binding ButtonContent}" Click="UpdateOrAddCar_Click" 
-                    Width="100" Height="30" Margin="0,10,0,10" Grid.Row="7"
+                    Height="30" Margin="0,10,0,10" Grid.Row="8"
                     HorizontalAlignment="Stretch"/>
 
-            <TextBlock Text="Services associés" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="8" Foreground="Black"/>
+            <TextBlock Text="Services associés" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="9" Foreground="Black"/>
 
-            <ListView Name="ServicesListView" Margin="0,0,0,5" Grid.Row="9" ItemsSource="{Binding Car.Services}">
+            <ListView Name="ServicesListView" Margin="0,0,0,5" Grid.Row="10" ItemsSource="{Binding Car.Services}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Description" Width="200" DisplayMemberBinding="{Binding Description}"/>

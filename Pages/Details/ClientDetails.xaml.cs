@@ -32,6 +32,17 @@ public partial class ClientDetails : Page
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    private async void ClientDetails_Loaded(object sender, RoutedEventArgs e)
+    {
+        // Vérifier si _client est null avant d'appeler la méthode
+        if (_client == null)
+        {
+            return;
+        }
+        await RefreshClientDetails(_client.Id); // Charger les détails du client
+    }
+
+
     public ClientDetails(int? clientId = null)
     {
         InitializeComponent();
@@ -42,7 +53,7 @@ public partial class ClientDetails : Page
         ButtonContent = clientId == null ? "Ajouter le client" : "Mettre à jour le client";
 
         if (clientId != null)
-            RefreshClientDetails(clientId.Value);
+            _= RefreshClientDetails(clientId.Value);
 
         DataContext = this; // Assurez-vous que le DataContext est bien défini
 
@@ -50,7 +61,7 @@ public partial class ClientDetails : Page
         UpdateOrAddClientButton.IsEnabled = false; 
     }
 
-    private async void RefreshClientDetails(int clientId)
+    private async Task RefreshClientDetails(int clientId)
     {
         _client = await _clientService.GetClientByIdWithCarsAsync(clientId) ?? throw new Exception("Client don't exist");
 
@@ -110,7 +121,7 @@ public partial class ClientDetails : Page
 
     private void AddCarButton_Click(object sender, RoutedEventArgs e)
     {
-        NavigationService.Navigate(new CarDetails(_client.Id));
+        NavigationService.Navigate(new CarDetails());
     }
 
     private async void DeleteCarButton_Click(object sender, RoutedEventArgs e)
@@ -151,30 +162,4 @@ public partial class ClientDetails : Page
             }
         }
     }
-
-    //private async void AjouterClient_Click(object sender, RoutedEventArgs e)
-    //{
-    //    // Vérifiez si les champs du client sont valides
-    //    if (!IsClientValid())
-    //    {
-    //        //MessageBox.Show("Veuillez vérifier les informations saisies.\nLe nom doit contenir au moins 3 lettres et le numéro de téléphone doit être valide.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
-    //        MessageBox.Show("Veuillez remplir au moins un champ.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
-    //        return;
-    //    }
-
-    //    // Créer une nouvelle instance de Client à partir des champs de texte
-    //    var client = new Client
-    //    {
-    //        LastName = NomTextBox.Text,
-    //        FirstName = PrenomTextBox.Text,
-    //        Phone = TelephoneTextBox.Text,
-    //        Email = EmailTextBox.Text,
-    //        Address = AdresseTextBox.Text,
-    //    };
-
-    //    await _clientService.AddAsync(client);
-    //    await this.RefreshClientsAsync();
-    //    ClearTextBox();
-    //}
-
 }

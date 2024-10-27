@@ -1,7 +1,8 @@
 ﻿<Page x:Class="PHILOBM.Pages.GestionClients"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="Gestion des Clients">
+      Title="Gestion des Clients"
+      Loaded="GestionClients_Loaded">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

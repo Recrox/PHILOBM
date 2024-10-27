@@ -61,7 +61,7 @@ public partial class InvoicePage : Page
             if (invoice != null)
             {
                 _invoiceService.CreerPDF(invoice); // Crée le PDF
-                //_invoiceService.CreerExcel(invoice); 
+                _invoiceService.CreerExcel(invoice);
 
                 // Afficher une fenêtre contextuelle de confirmation
                 MessageBox.Show("La facture a été imprimée avec succès.", "Impression Terminée", MessageBoxButton.OK, MessageBoxImage.Information);

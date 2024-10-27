@@ -44,7 +44,7 @@ public partial class AddCar : Page
                 ChassisNumber = chassisNumber,
                 Mileage = mileage,
                 ClientId = _client.Id, // Assurez-vous que l'ID du client est disponible
-                Owner = _client,
+                Client = _client,
                 Brand = brand,
                 Model = model,
             };

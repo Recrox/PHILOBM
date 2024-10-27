@@ -362,7 +362,11 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
 
         // Chemin du dossier de téléchargement
         directoryPath = ConstantsSettings.DownloadPath;
-        string filePath = Path.Combine(directoryPath, fileName);
+
+        // Chemin du dossier "Factures" à l'intérieur du dossier de téléchargement
+        string facturesDirectory = Path.Combine(directoryPath, "Factures");
+
+        string filePath = Path.Combine(facturesDirectory, fileName);
         FileInfo excelFile = new FileInfo(filePath);
         package.SaveAs(excelFile);
     }

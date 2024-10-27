@@ -10,6 +10,7 @@ using System.Linq;
 using System.ComponentModel;
 using System.Windows.Navigation;
 
+
 namespace PHILOBM.Pages;
 
 public partial class GestionClients : Page
@@ -19,12 +20,14 @@ public partial class GestionClients : Page
 
     public GestionClients()
     {
+        
         InitializeComponent();
         _clientService = ServiceLocator.GetService<IClientService>();
+    }
 
-        //ClientsListView.ItemsSource = _clientsView;
-        _ = RefreshClientsAsync(); // Charger les clients lors de l'initialisation
-
+    private async void GestionClients_Loaded(object sender, RoutedEventArgs e)
+    {
+        await RefreshClientsAsync(); // Charger les clients à chaque fois que la page est chargée
     }
 
     private async Task RefreshClientsAsync()
@@ -40,7 +43,7 @@ public partial class GestionClients : Page
 
     private void Rechercher_Click(object sender, RoutedEventArgs e)
     {
-        string searchText = RechercheTextBox.Text.ToLower();
+        string searchText = RechercheTextBox.Text.ToLower().Trim();
 
         // Filtrer les clients à l'aide de LINQ
         var clientFiltered = Clients
