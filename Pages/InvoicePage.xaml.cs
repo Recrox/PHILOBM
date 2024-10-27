@@ -56,48 +56,65 @@ public partial class InvoicePage : Page
         }
     }
 
-
-
     private void LoadMockInvoices()
     {
-        // Créez une liste de factures fictives
+        // Créez une liste de factures fictives avec des adresses pour chaque client
         Invoices.Add(new Invoice
         {
             Id = 1,
-            Client = new Client { Id = 1, LastName = "Dupont", FirstName = "Arno"},
+            Client = new Client
+            {
+                Id = 1,
+                LastName = "Dupont",
+                FirstName = "Arno",
+                Address = "12 Rue de la Paix, 75002 Paris, France"
+            },
             Car = new Car { LicensePlate = "ABC 123" },
             Date = DateTime.Now.AddDays(-10),
             Services = new List<Service>
-                {
-                    new Service { Description = "Changement d'huile", Price = 50 },
-                    new Service { Description = "Réparation de frein", Price = 120 }
-                }
+        {
+            new Service { Description = "Changement d'huile", Price = 50 },
+            new Service { Description = "Réparation de frein", Price = 120 }
+        }
         });
 
         Invoices.Add(new Invoice
         {
             Id = 2,
-            Client = new Client { Id = 2, LastName = "Martin", FirstName = "Arno" },
+            Client = new Client
+            {
+                Id = 2,
+                LastName = "Martin",
+                FirstName = "Julie",
+                Address = "48 Avenue des Champs-Élysées, 75008 Paris, France"
+            },
             Car = new Car { LicensePlate = "XYZ 789" },
             Date = DateTime.Now.AddDays(-5),
             Services = new List<Service>
-                {
-                    new Service { Description = "Contrôle technique", Price = 80 },
-                    new Service { Description = "Remplacement de pneus", Price = 300 }
-                }
+        {
+            new Service { Description = "Contrôle technique", Price = 80 },
+            new Service { Description = "Remplacement de pneus", Price = 300 }
+        }
         });
 
         Invoices.Add(new Invoice
         {
             Id = 3,
-            Client = new Client { Id = 3, LastName = "Bernard", FirstName = "Arno" },
+            Client = new Client
+            {
+                Id = 3,
+                LastName = "Bernard",
+                FirstName = "Luc",
+                Address = "15 Place de l'Hôtel de Ville, 69001 Lyon, France"
+            },
             Car = new Car { LicensePlate = "LMN 456" },
             Date = DateTime.Now.AddDays(-2),
             Services = new List<Service>
-                {
-                    new Service { Description = "Révision complète", Price = 150 },
-                    new Service { Description = "Changement de batterie", Price = 120 }
-                }
+        {
+            new Service { Description = "Révision complète", Price = 150 },
+            new Service { Description = "Changement de batterie", Price = 120 }
+        }
         });
     }
+
 }

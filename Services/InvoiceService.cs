@@ -80,7 +80,7 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
             new XRect(rightMargin - 150, yPoint, 150, 20), XStringFormats.TopRight);
         yPoint += 20;
 
-        gfx.DrawString($"Adresse client : {invoice.Client.Adress}", new XFont("Verdana", 12), XBrushes.Black,
+        gfx.DrawString($"Adresse client : {invoice.Client.Address}", new XFont("Verdana", 12), XBrushes.Black,
             new XRect(rightMargin - 150, yPoint, 150, 20), XStringFormats.TopRight);
         yPoint += 20;
     }

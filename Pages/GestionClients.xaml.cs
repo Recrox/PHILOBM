@@ -83,7 +83,7 @@ public partial class GestionClients : Page
             FirstName = PrenomTextBox.Text,
             Phone = TelephoneTextBox.Text,
             Email = EmailTextBox.Text,
-            Adress = AdresseTextBox.Text,
+            Address = AdresseTextBox.Text,
         };
 
         await _clientService.AddAsync(client);
