@@ -49,7 +49,7 @@ public partial class App : Application
             MaxBackupCount = ConstantsSettings.MaxBackupCount,
             ShowMessageBoxes = ConstantsSettings.ShowMessageBoxes
         });
-        AddDbContext(services);
+        AddDbContextRelative(services);
 
         services.AddScoped<IClientService, ClientService>();
         services.AddScoped<ICarService, CarService>();
@@ -57,7 +57,7 @@ public partial class App : Application
         services.AddLogging();
     }
 
-    private static void AddDbContext(IServiceCollection services)
+    private static void AddDbContextRelative(IServiceCollection services)
     {
         var dbDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Database");
         if (!Directory.Exists(dbDirectory))
@@ -69,6 +69,26 @@ public partial class App : Application
         services.AddDbContext<PhiloBMContext>(options =>
             options.UseSqlite($"Data Source={dbPath}"));
     }
+
+    //private static void AddDbContextAbsolu(IServiceCollection services)
+    //{
+    //    // Dossier de l'application dans le dossier AppData\Roaming de l'utilisateur
+    //    var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+    //    var dbDirectory = Path.Combine(appDataPath, "PhiloBM", "Database");
+
+    //    // Créer le répertoire s'il n'existe pas
+    //    if (!Directory.Exists(dbDirectory))
+    //    {
+    //        Directory.CreateDirectory(dbDirectory);
+    //    }
+
+    //    // Chemin absolu pour la base de données
+    //    var dbPath = Path.Combine(dbDirectory, ConstantsSettings.DBName);
+
+    //    services.AddDbContext<PhiloBMContext>(options =>
+    //        options.UseSqlite($"Data Source={dbPath}"));
+    //}
+
 
     protected override void OnStartup(StartupEventArgs e)
     {

@@ -54,7 +54,6 @@
             <StackPanel Grid.Row="7" Margin="0,0,0,5">
                 <Label Content="Adresse" FontWeight="Bold"/>
                 <TextBox Name="AddressTextBox" Margin="0,0,0,5" TextChanged="TextBox_TextChanged"/>
-                <!-- Ajouté pour l'adresse -->
             </StackPanel>
 
             <Button Name="UpdateClientButton" Content="Mettre à jour le client" Click="UpdateClient_Click" 

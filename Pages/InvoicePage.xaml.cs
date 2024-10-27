@@ -1,8 +1,11 @@
-﻿using PHILOBM.Models;
+﻿using PHILOBM.Constants;
+using PHILOBM.Models;
 using PHILOBM.Models.Base;
 using PHILOBM.Services;
 using PHILOBM.Services.Interfaces;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -39,7 +42,16 @@ public partial class InvoicePage : Page
         }
     }
 
+    private void Rechercher_Click(object sender, RoutedEventArgs e)
+    {
+        string searchText = RechercheTextBox.Text.ToLower();
+        var filteredInvoices = Invoices.Where(i =>
+            (i.Client.LastName?.ToLower().Contains(searchText) ?? false) ||
+            (i.Car.LicensePlate?.ToLower().Contains(searchText) ?? false))
+            .ToList();
 
+        InvoicesListView.ItemsSource = filteredInvoices;
+    }
 
     private void PrintInvoice_Click(object sender, RoutedEventArgs e)
     {
@@ -59,6 +71,22 @@ public partial class InvoicePage : Page
             {
                 MessageBox.Show("Erreur : Facture non trouvée.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+    }
+
+    private void OpenDownloadFolder_Click(object sender, RoutedEventArgs e)
+    {
+        // Chemin du dossier de téléchargement de l'utilisateur
+        string downloadFolderPath = ConstantsSettings.DownloadPath;
+
+        if (Directory.Exists(downloadFolderPath))
+        {
+            // Ouvre le dossier dans l'explorateur de fichiers
+            Process.Start("explorer.exe", downloadFolderPath);
+        }
+        else
+        {
+            MessageBox.Show("Le dossier de téléchargement n'existe pas.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 

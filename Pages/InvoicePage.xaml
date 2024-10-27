@@ -4,9 +4,54 @@
       Title="Facture">
 
     <Grid Margin="10">
-        <TextBlock Text="Historique de Facturation" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Title Row -->
+            <RowDefinition Height="Auto"/>
+            <!-- Search Bar Row -->
+            <RowDefinition Height="Auto"/>
+            <!-- Invoice Info Row 1 -->
+            <RowDefinition Height="Auto"/>
+            <!-- Invoice Info Row 2 -->
+            <RowDefinition Height="Auto"/>
+            <!-- Invoice Info Row 3 -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row for open folder button -->
+            <RowDefinition Height="*"/>
+            <!-- Row for ListView -->
+        </Grid.RowDefinitions>
 
-        <ListView Name="InvoicesListView" ItemsSource="{Binding Invoices}">
+        <!-- Titre de la page -->
+        <TextBlock Text="Historique de Facturation" 
+                   FontSize="24" 
+                   FontWeight="Bold" 
+                   Grid.Row="0" 
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
+
+        <!-- Barre de recherche avec TextBox et bouton -->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="1">
+            <TextBlock Text="Rechercher :" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox Name="RechercheTextBox" Width="200" Margin="0,0,10,0" TextChanged="Rechercher_Click"/>
+            <Button Content="Rechercher" Click="Rechercher_Click"/>
+        </StackPanel>
+
+        <!-- Informations de la facture -->
+        <TextBlock Text="{Binding InvoiceDate, StringFormat='Date : {0:dd/MM/yyyy HH:mm}'}" Grid.Row="2"/>
+        <TextBlock Text="{Binding InvoiceNumber, StringFormat='Facture n° : {0}'}" Grid.Row="3"/>
+        <TextBlock Text="{Binding ClientAddress, StringFormat='Adresse client : {0}'}" Grid.Row="4"/>
+
+        <!-- Bouton pour ouvrir le dossier de téléchargement -->
+        <Button Content="Ouvrir le dossier de téléchargement" 
+                Grid.Row="5"
+                HorizontalAlignment="Right"
+                Click="OpenDownloadFolder_Click"
+                Margin="0,10,0,10"/>
+
+        <!-- Liste des factures -->
+        <ListView Name="InvoicesListView" 
+                  ItemsSource="{Binding Invoices}" 
+                  Grid.Row="6">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding Date}"/>
@@ -17,15 +62,14 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Imprimer"
-                                Click="PrintInvoice_Click"
-                                CommandParameter="{Binding}"
-                                ToolTip="Imprimer cette facture"/>
+                                        Click="PrintInvoice_Click"
+                                        CommandParameter="{Binding}"
+                                        ToolTip="Imprimer cette facture"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-
     </Grid>
 </Page>

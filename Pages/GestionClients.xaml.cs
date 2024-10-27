@@ -17,13 +17,8 @@ public partial class GestionClients : Page
     {
         InitializeComponent();
         Clients = new ObservableCollection<Client>();
-        // Ajouter quelques clients pour tester
-        
         ClientsListView.ItemsSource = Clients;
-
-        var clientService = ServiceLocator.GetService<IClientService>();
-        _clientService = clientService;
-        // Récupérer le service à partir du conteneur DI
+        _clientService = ServiceLocator.GetService<IClientService>(); ;
         _ = RefreshClientsAsync(); // Charger les clients lors de l'initialisation
     }
 

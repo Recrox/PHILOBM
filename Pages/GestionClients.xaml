@@ -61,8 +61,7 @@
                     <GridViewColumn Header="Prénom" DisplayMemberBinding="{Binding FirstName}" Width="120"/>
                     <GridViewColumn Header="Téléphone" DisplayMemberBinding="{Binding Phone}" Width="120"/>
                     <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" Width="120"/>
-                    <GridViewColumn Header="Adresse" DisplayMemberBinding="{Binding Adress}" Width="200"/>
-                    <!-- Vérifiez l'orthographe ici aussi -->
+                    <GridViewColumn Header="Adresse" DisplayMemberBinding="{Binding Address}" Width="200"/>
 
 
                     <GridViewColumn Width="50">

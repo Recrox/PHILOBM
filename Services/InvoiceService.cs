@@ -9,6 +9,7 @@ using System.Reflection.Metadata;
 using OfficeOpenXml;
 using System.Drawing;
 using OfficeOpenXml.Style;
+using PHILOBM.Constants;
 
 namespace PHILOBM.Services;
 
@@ -21,9 +22,6 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
 
     public void CreerPDF(Invoice invoice)
     {
-        string directoryPath = "Factures";
-        CréerDossierSiInexistant(directoryPath);
-
         var document = new PdfDocument();
         var page = document.AddPage();
         var gfx = XGraphics.FromPdfPage(page);
@@ -40,7 +38,7 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         DessinerTableauPlaqueEtKilometrage(gfx, page, invoice, ref yPoint, margin);
         DessinerTableauServices(gfx, document, page, invoice, ref yPoint, margin);
 
-        SauvegarderDocument(document, directoryPath, invoice);
+        SauvegarderDocument(document, invoice);
     }
 
     // Sous-méthodes pour chaque section
@@ -241,7 +239,7 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
     {
         gfx.DrawRectangle(XPens.Black, x, y, width, height);
     }
-    private void SauvegarderDocument(PdfDocument document, string directoryPath, Invoice invoice, bool useClientNameAndDate = true)
+    private void SauvegarderDocument(PdfDocument document, Invoice invoice, bool useClientNameAndDate = true)
     {
         string fileName;
 
@@ -256,12 +254,22 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
             fileName = $"Facture_{invoice.Id}.pdf";
         }
 
-        string filePath = Path.Combine(directoryPath, fileName);
+        // Chemin du dossier de téléchargement
+        string directoryPath = ConstantsSettings.DownloadPath;
+
+        // Chemin du dossier "Factures" à l'intérieur du dossier de téléchargement
+        string facturesDirectory = Path.Combine(directoryPath, "Factures");
+
+        // Créer le dossier "Factures" s'il n'existe pas
+        CréerDossierSiInexistant(facturesDirectory);
+
+        // Chemin complet du fichier PDF
+        string filePath = Path.Combine(facturesDirectory, fileName);
+
+        // Sauvegarder le document PDF
         document.Save(filePath);
         document.Close();
     }
-
-
 
     public async Task<IEnumerable<Invoice>> GetInvoicesForClientAsync(int selectedClientId)
     {
@@ -364,6 +372,8 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
             fileName = $"Facture_{invoice.Id}.xlsx";
         }
 
+        // Chemin du dossier de téléchargement
+        directoryPath = ConstantsSettings.DownloadPath;
         string filePath = Path.Combine(directoryPath, fileName);
         FileInfo excelFile = new FileInfo(filePath);
         package.SaveAs(excelFile);

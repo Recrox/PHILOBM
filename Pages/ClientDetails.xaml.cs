@@ -34,7 +34,7 @@ public partial class ClientDetails : Page
         FirstNameTextBox.Text = _client.FirstName;
         PhoneTextBox.Text = _client.Phone;
         EmailTextBox.Text = _client.Email;
-
+        AddressTextBox.Text = _client.Address;
         // Utiliser le ListView pour afficher les voitures
         CarsListView.ItemsSource = _client.Cars; // Utilisez ItemsSource pour lier la collection de voitures
     }
@@ -51,6 +51,7 @@ public partial class ClientDetails : Page
         _client.FirstName = FirstNameTextBox.Text;
         _client.Phone = PhoneTextBox.Text;
         _client.Email = EmailTextBox.Text;
+        _client.Address = AddressTextBox.Text;
 
         await _clientService.UpdateAsync(_client); // Ensure this method exists
         //MessageBox.Show("Client updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
