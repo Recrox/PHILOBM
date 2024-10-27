@@ -4,8 +4,8 @@
         xmlns:pages="clr-namespace:PHILOBM.Pages"
         Title="PHILO B.M" Height="700" Width="1200"
         >
-    <Grid>
-        <Menu>
+    <Grid >
+        <Menu Background="#E8F5E9">
             <MenuItem Header="Accueil" Click="Accueil_Click"/>
             <MenuItem Header="Gestion" Click="GestionClients_Click"/>
 
@@ -17,3 +17,8 @@
         <Frame Name="MainFrame" Margin="10" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
+
+
+<!--Bleu pâle : #E0F7FA
+Beige : #FAEBD7
+Vert clair : #E8F5E9-->

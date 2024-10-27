@@ -41,15 +41,17 @@ public partial class App : Application
     private static void AddServices(IServiceCollection services)
     {
         services.AddSingleton<MainWindow>();
-        services.AddSingleton<FileService>(provider => new FileService
+        services.AddSingleton(provider => new FileService
         {
             DatabaseFileName = ConstantsSettings.DBName,
             BackupDirectory = ConstantsSettings.BackupPath,
             MaxBackupCount =ConstantsSettings.MaxBackupCount,
             ShowMessageBoxes = ConstantsSettings.ShowMessageBoxes
         });
+
         services.AddDbContext<PhiloBMContext>(options =>
                 options.UseSqlite($"Data Source={ConstantsSettings.DBName}"));
+
         services.AddScoped<IClientService, ClientService>();
         services.AddScoped<ICarService, CarService>();
         services.AddScoped<IInvoiceService, InvoiceService>();
