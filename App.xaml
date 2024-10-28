@@ -12,6 +12,18 @@
             <Setter Property="Margin" Value="0,10,0,0"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        CornerRadius="10"
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Background" Value="#B0BEC5"/>
@@ -21,6 +33,9 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+
+
 
         <!-- Style global pour les éléments ListView -->
         <Style TargetType="ListViewItem">

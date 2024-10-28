@@ -6,7 +6,17 @@
         Icon="Assets/garage_place_building.ico"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <Menu Background="#E8F5E9">
+        <Menu Background="#E8F5E9" Margin="0 0 0 100">
+            <!-- Style pour agrandir les MenuItems -->
+            <Menu.Resources>
+                <Style TargetType="MenuItem">
+                    <Setter Property="FontSize" Value="16"/>
+                    <!-- Taille de la police -->
+                    <Setter Property="Padding" Value="10,5"/>
+                    <!-- Espacement interne -->
+                </Style>
+            </Menu.Resources>
+
             <MenuItem Header="Accueil" Click="Accueil_Click"/>
             <MenuItem Header="GestionClient" Click="GestionClients_Click"/>
             <MenuItem Header="Facturation" Click="Invoice_Click"/>
@@ -15,12 +25,12 @@
             </MenuItem>
         </Menu>
 
-        <!-- Label pour afficher l'onglet actuel -->
+        <!-- Label pour afficher l'onglet actuel --><!--
         <TextBlock Name="CurrentTabTextBlock" 
                    Margin="10" 
                    FontWeight="Bold" 
                    FontSize="16" 
-                   Foreground="DarkBlue"/>
+                   Foreground="DarkBlue"/>-->
 
         <Frame Name="MainFrame" Margin="10" NavigationUIVisibility="Hidden"/>
     </Grid>
