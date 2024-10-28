@@ -11,7 +11,7 @@
             <RowDefinition Height="*"/> <!-- Row for the ListView -->
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Gestion des Clients" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" Grid.Row="0"/>
+        <TextBlock Text="Gestion des Clients"  Margin="0,0,0,10" Grid.Row="0" Style="{StaticResource TitleTextBlockStyle}"/>
 
         <!-- Barre de recherche -->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="1">

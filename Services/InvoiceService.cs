@@ -101,7 +101,7 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
 
     private void DessinerInformationsClient(XGraphics gfx, PdfPage page, Invoice invoice, ref double yPoint, double margin)
     {
-        gfx.DrawString($"Client: {invoice.Client.FirstName} {invoice.Client.LastName}", new XFont("Verdana", 12), XBrushes.Black,
+        gfx.DrawString($"Client: {invoice.Client.FullName}", new XFont("Verdana", 12), XBrushes.Black,
             new XRect(margin, yPoint, page.Width - 2 * margin, page.Height), XStringFormats.TopLeft);
         yPoint += 20;
     }

@@ -10,10 +10,10 @@
             <TextBlock Text="Gérez vos clients et vos factures facilement." FontSize="20" Margin="0,0,0,20" Foreground="#555" TextAlignment="Center"/>
 
             <Button Content="Commencer" Width="300" Height="50" Click="Commencer_Click" 
-                    Style="{StaticResource StyledButton}" FontWeight="Bold" Margin="0,0,0,10"/>
+                    Style="{StaticResource StyledButton}" FontWeight="Bold" />
 
             <Button Content="Ouvrir l'emplacement de la Base de données..." Width="300" Height="50" 
-        Click="OpenDbLocation_Click" Style="{StaticResource StyledButton}" FontWeight="Bold"/>
+        Click="OpenDbLocation_Click" Style="{StaticResource StyledButton}" FontWeight="Bold" Margin="0,10,0,10"/>
 
             <Button Content="Ouvrir le dossier de Backups..." Width="300" Height="50" 
         Click="OpenBackupFolder_Click" Style="{StaticResource StyledButton}" FontWeight="Bold"/>

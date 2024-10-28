@@ -29,6 +29,6 @@ public partial class Accueil : Page
 
     private void OpenBackupFolder_Click(object sender, RoutedEventArgs e)
     {
-        Outils.OpenFolder(Constants.BackupPath);
+        Outils.OpenFolder(Constants.BackupFolderName);
     }
 }

@@ -45,7 +45,7 @@ public partial class App : Application
         services.AddSingleton(provider => new FileService
         {
             DatabaseFileName = Constants.DBName,
-            BackupDirectory = Constants.BackupPath,
+            BackupDirectory = Constants.BackupFolderName,
             MaxBackupCount = Constants.MaxBackupCount,
             ShowMessageBoxes = Constants.ShowMessageBoxes
         });

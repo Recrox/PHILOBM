@@ -35,7 +35,7 @@
                 <TextBlock Text="← Retour" FontSize="24" VerticalAlignment="Center"/>
             </Button>
 
-            <TextBlock Text="Détails de la Voiture" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="1"/>
+            <TextBlock Text="Détails de la Voiture" FontSize="24" FontWeight="Bold" Margin="0,10,0,10" Grid.Row="1" Style="{StaticResource TitleTextBlockStyle}"/>
 
             <StackPanel Grid.Row="2" Margin="0,0,0,5">
                 <Label Content="Marque" FontWeight="Bold"  />
