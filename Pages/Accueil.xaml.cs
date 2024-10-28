@@ -26,4 +26,9 @@ public partial class Accueil : Page
         //string dbPath = Path.Combine(ConstantsSettings.RacinePath, ConstantsSettings.DBName);
         Outils.OpenFolder(Constants.RacinePath);
     }
+
+    private void OpenBackupFolder_Click(object sender, RoutedEventArgs e)
+    {
+        Outils.OpenFolder(Constants.BackupPath);
+    }
 }

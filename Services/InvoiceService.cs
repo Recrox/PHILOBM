@@ -133,23 +133,25 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
 
     private void DessinerTableauServices(XGraphics gfx, PdfDocument document, PdfPage page, Invoice invoice, ref double yPoint, double margin)
     {
-        // Définir une largeur fixe pour la colonne "Unité" et "Prix"
+        // Largeurs pour chaque colonne
         double unitColWidth = 50; // Largeur pour la colonne "Unité"
         double priceColWidth = 100; // Largeur pour la colonne "Prix" (suffisante pour 12 chiffres)
-        double descriptionColWidth = (page.Width - 2 * margin - unitColWidth - priceColWidth); // Le reste de l'espace pour "Description"
+        double descriptionPadding = 10; // Espace au début de la colonne "Description"
+        double pricePadding = 10; // Espace à droite de la colonne "Prix"
+        double descriptionColWidth = (page.Width - 2 * margin - unitColWidth - priceColWidth - descriptionPadding - pricePadding); // Largeur restante pour "Description"
         double cellHeight = 20;
 
         // Dessiner les en-têtes du tableau
         DessinerRectangle(gfx, margin, yPoint, unitColWidth, cellHeight);
-        DessinerRectangle(gfx, margin + unitColWidth, yPoint, descriptionColWidth, cellHeight);
-        DessinerRectangle(gfx, margin + unitColWidth + descriptionColWidth, yPoint, priceColWidth, cellHeight);
+        DessinerRectangle(gfx, margin + unitColWidth, yPoint, descriptionColWidth + descriptionPadding, cellHeight);
+        DessinerRectangle(gfx, margin + unitColWidth + descriptionColWidth + descriptionPadding, yPoint, priceColWidth + pricePadding, cellHeight);
 
         gfx.DrawString("Unité", new XFont("Verdana", 12, XFontStyle.Bold), XBrushes.Black,
             new XRect(margin, yPoint, unitColWidth, cellHeight), XStringFormats.Center);
         gfx.DrawString("Description", new XFont("Verdana", 12, XFontStyle.Bold), XBrushes.Black,
-            new XRect(margin + unitColWidth, yPoint, descriptionColWidth, cellHeight), XStringFormats.Center);
+            new XRect(margin + unitColWidth + descriptionPadding, yPoint, descriptionColWidth, cellHeight), XStringFormats.Center);
         gfx.DrawString("Prix", new XFont("Verdana", 12, XFontStyle.Bold), XBrushes.Black,
-            new XRect(margin + unitColWidth + descriptionColWidth, yPoint, priceColWidth, cellHeight), XStringFormats.Center);
+            new XRect(margin + unitColWidth + descriptionColWidth + descriptionPadding, yPoint, priceColWidth, cellHeight), XStringFormats.Center);
         yPoint += cellHeight;
 
         foreach (var service in invoice.Services)
@@ -163,15 +165,15 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
             }
 
             DessinerRectangle(gfx, margin, yPoint, unitColWidth, cellHeight);
-            DessinerRectangle(gfx, margin + unitColWidth, yPoint, descriptionColWidth, cellHeight);
-            DessinerRectangle(gfx, margin + unitColWidth + descriptionColWidth, yPoint, priceColWidth, cellHeight);
+            DessinerRectangle(gfx, margin + unitColWidth, yPoint, descriptionColWidth + descriptionPadding, cellHeight);
+            DessinerRectangle(gfx, margin + unitColWidth + descriptionColWidth + descriptionPadding, yPoint, priceColWidth + pricePadding, cellHeight);
 
             gfx.DrawString(service.Units.ToString(), new XFont("Verdana", 12), XBrushes.Black,
                 new XRect(margin, yPoint, unitColWidth, cellHeight), XStringFormats.Center);
             gfx.DrawString(service.Description, new XFont("Verdana", 12), XBrushes.Black,
-                new XRect(margin + unitColWidth, yPoint, descriptionColWidth, cellHeight), XStringFormats.CenterLeft);
+                new XRect(margin + unitColWidth + descriptionPadding, yPoint, descriptionColWidth, cellHeight), XStringFormats.CenterLeft);
             gfx.DrawString($"{service.CalculateCost():F2} €", new XFont("Verdana", 12), XBrushes.Black, // Format avec deux décimales
-                new XRect(margin + unitColWidth + descriptionColWidth, yPoint, priceColWidth, cellHeight), XStringFormats.CenterRight);
+                new XRect(margin + unitColWidth + descriptionColWidth + descriptionPadding, yPoint, priceColWidth, cellHeight), XStringFormats.CenterRight);
             yPoint += cellHeight;
         }
 
@@ -181,6 +183,8 @@ public class InvoiceService : BaseContextService<Invoice>, IInvoiceService
         // Appel à DessinerMessagePaiement après le total
         DessinerMessagePaiement(gfx, document, page, ref yPoint, margin);
     }
+
+
 
     private void DessinerTotal(XGraphics gfx, PdfDocument document, PdfPage page, Invoice invoice, ref double yPoint, double margin)
     {

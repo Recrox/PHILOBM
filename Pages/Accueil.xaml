@@ -13,7 +13,10 @@
                     Style="{StaticResource StyledButton}" FontWeight="Bold" Margin="0,0,0,10"/>
 
             <Button Content="Ouvrir l'emplacement de la Base de données..." Width="300" Height="50" 
-                    Click="OpenDbLocation_Click" Style="{StaticResource StyledButton}" FontWeight="Bold"/>
+        Click="OpenDbLocation_Click" Style="{StaticResource StyledButton}" FontWeight="Bold"/>
+
+            <Button Content="Ouvrir le dossier de Backups..." Width="300" Height="50" 
+        Click="OpenBackupFolder_Click" Style="{StaticResource StyledButton}" FontWeight="Bold"/>
         </StackPanel>
     </Grid>
 </Page>

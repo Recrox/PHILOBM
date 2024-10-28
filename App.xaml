@@ -9,7 +9,7 @@
             <Setter Property="Background" Value="#2196F3"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Height" Value="30"/>
-            <Setter Property="Margin" Value="0,10,0,0"/>
+            <Setter Property="Padding" Value="5"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
